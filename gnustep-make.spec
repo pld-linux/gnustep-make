@@ -10,16 +10,16 @@ Source0:	ftp://ftp.gnustep.org/pub/gnustep/core/%{name}-%{version}.tar.gz
 Patch0:		gnustep-make-configure.patch
 Patch1:		gnustep-make-doc.patch
 URL:		http://www.gnustep.org/
-BuildRequires:	texinfo-texi2dvi
 BuildRequires:	tetex >= 1.0.7
+BuildRequires:	texinfo-texi2dvi
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Conflicts:	gnustep-core
 
-%define         _prefix         /usr/GNUstep
+%define         _prefix         /usr/lib/GNUstep
 
 %description
 This package contains the basic tools needed to run GNUstep
-applications. Library combo is %{libcombo}. %{_buildblurb}
+applications.
 
 %description -l pl
 Ten pakiet zawiera podstawowe narzêdzia potrzebne do uruchamiania
@@ -37,7 +37,7 @@ write makefiles for a GNUstep-based project. It allows the user to
 write a GNUstep-based project without having to deal with the complex
 issues associated with the configuration and installation of the core
 GNUstep libraries. It also allows the user to easily create
-cross-compiled binaries. Library combo is %{libcombo}. %{_buildblurb}
+cross-compiled binaries.
 
 %description devel -l pl
 Pakiet makefile jest prost±, wydajn± i rozszerzaln± metod± pisania
@@ -64,56 +64,67 @@ rm -f missing
 
 %install
 rm -rf $RPM_BUILD_ROOT
-%{__make} install special_prefix=${RPM_BUILD_ROOT}
-install -d ${RPM_BUILD_ROOT}%{_prefix}/System/Documentation/info/
-install Documentation/*.texi \
-	${RPM_BUILD_ROOT}%{_prefix}/System/Documentation/info/
+%{__make} install special_prefix=$RPM_BUILD_ROOT
 
-%ifos Linux
-install -d ${RPM_BUILD_ROOT}/etc/profile.d
+install -d $RPM_BUILD_ROOT%{_prefix}/System/Documentation/info
+install Documentation/*.texi \
+	$RPM_BUILD_ROOT%{_prefix}/System/Documentation/info
+
+install -d $RPM_BUILD_ROOT/etc/profile.d
 # Create profile files
 cat > ./mygnustep.sh << EOF
 #!/bin/sh
 . %{_prefix}/System/Makefiles/GNUstep.sh
 EOF
 
-#cat > mygnustep.csh << EOF
+cat > mygnustep.csh << EOF
 #!/bin/csh
-#source %{_prefix}/GNUstep/System/Makefiles/GNUstep.csh
-#EOF
+source %{_prefix}/GNUstep/System/Makefiles/GNUstep.csh
+EOF
 
 chmod 755 mygnustep.*
 mv -f mygnustep.sh $RPM_BUILD_ROOT/etc/profile.d/GNUstep.sh
-#mv -f mygnustep.csh $RPM_BUILD_ROOT/etc/profile.d/GNUstep.csh
-%endif
+mv -f mygnustep.csh $RPM_BUILD_ROOT/etc/profile.d/GNUstep.csh
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%files
+%defattr(644,root,root,755)
+%doc ChangeLog FAQ NEWS README
+%doc Documentation/DESIGN
+#%doc Documentation/*.info
+%dir %{_prefix}
+%{_prefix}/Local
+%{_prefix}/Network
+%dir %{_prefix}/System
+%{_prefix}/System/Applications
+%{_prefix}/System/Developer
+%docdir %{_prefix}/System/Documentation
+%{_prefix}/System/Documentation
+%{_prefix}/System/Headers
+%{_prefix}/System/Libraries
+%{_prefix}/System/Library
+%dir %{_prefix}/System/Makefiles
+%attr(755,root,root) %{_prefix}/System/Makefiles/config.*
+%attr(755,root,root) %{_prefix}/System/Makefiles/*.sh
+%attr(755,root,root) %{_prefix}/System/Makefiles/*.csh
+%dir %{_prefix}/System/Makefiles/ix86
+%dir %{_prefix}/System/Makefiles/ix86/linux-gnu
+%attr(755,root,root) %{_prefix}/System/Makefiles/ix86/linux-gnu/user_home
+%attr(755,root,root) %{_prefix}/System/Makefiles/ix86/linux-gnu/which_lib
+%{_prefix}/System/share
+%attr(755,root,root) %{_prefix}/System/Tools
+
+%attr(755,root,root) %config(noreplace) %verify(not size mtime md5) /etc/profile.d/GNUstep.sh
+%attr(755,root,root) %config(noreplace) %verify(not size mtime md5) /etc/profile.d/GNUstep.csh
+
 %files devel
 %defattr(644,root,root,755)
 %{_prefix}/System/Makefiles/*.make
-%{_prefix}/System/Makefiles/*/*.make
-%{_prefix}/System/Makefiles/*/*/*.make
 %{_prefix}/System/Makefiles/*.template
+%{_prefix}/System/Makefiles/Instance
+%{_prefix}/System/Makefiles/Master
+%{_prefix}/System/Makefiles/ix86/linux-gnu/*.make
 %attr(755,root,root) %{_prefix}/System/Makefiles/install-sh
 %attr(755,root,root) %{_prefix}/System/Makefiles/mkinstalldirs
-
-%files
-%defattr(-,root,root,755)
-%doc COPYING ChangeLog FAQ NEWS README
-%doc Documentation/DESIGN
-%doc Documentation/*.info
-/etc
-%{_prefix}/Local
-%{_prefix}/Network
-%{_prefix}/System/[^M]*
-%{_prefix}/System/Makefiles/config*
-%attr(755,root,root) %{_prefix}/System/Makefiles/*.sh
-%attr(755,root,root) %{_prefix}/System/Makefiles/*.csh
-%attr(755,root,root) %{_prefix}/System/Makefiles/ix86/linux-gnu/user_home
-%attr(755,root,root) %{_prefix}/System/Makefiles/ix86/linux-gnu/which_lib
-
-%ifos Linux                                                                     %config(noreplace) /etc/profile.d/GNUstep.sh
-#%config /etc/profile.d/GNUstep.csh
-%endif # Linux   
