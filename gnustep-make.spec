@@ -24,8 +24,12 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %ifarch %{ix86}
 %define		gscpu		ix86
 %else
+%ifarch amd64
+%define		gscpu		x86_64
+%else
 # also s/alpha.*/alpha/, but we use only "alpha" arch for now
 %define		gscpu		%{_target_cpu}
+%endif
 %endif
 
 %description
