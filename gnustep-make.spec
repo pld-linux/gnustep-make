@@ -2,7 +2,7 @@ Summary:	GNUstep Makefile package
 Summary(pl):	Pakiet GNUstep Makefile
 Name:		gnustep-make
 Version:	1.9.1
-Release:	1
+Release:	2
 License:	GPL
 Vendor:		The GNUstep Project
 Group:		Applications/System
@@ -10,15 +10,14 @@ Source0:	ftp://ftp.gnustep.org/pub/gnustep/core/%{name}-%{version}.tar.gz
 # Source0-md5:	0d1e5e0d8e57662b6c2cf969d9a09750
 URL:		http://www.gnustep.org/
 BuildRequires:	autoconf
+BuildRequires:	automake
 BuildRequires:	tetex
-BuildRequires:	tetex-format-plain
-BuildRequires:	texinfo-texi2dvi
+BuildRequires:	tetex-dvips
 BuildRequires:	tetex-format-latex
 BuildRequires:	tetex-format-plain
-BuildRequires:	tetex-dvips
-
-BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+BuildRequires:	texinfo-texi2dvi
 Conflicts:	gnustep-core
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define         _prefix         /usr/lib/GNUstep
 %define		gsos		linux-gnu
@@ -62,8 +61,10 @@ tak¿e ³atwo tworzyæ kompilowane skro¶nie binaria.
 %setup -q
 
 %build
+cp -f /usr/share/automake/config.* .
 %{__autoconf}
-%configure --disable-flattened
+%configure \
+	--disable-flattened
 
 %{__make}
 %{__make} -C Documentation
