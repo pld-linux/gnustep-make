@@ -7,7 +7,7 @@ License:	GPL
 Vendor:		The GNUstep Project
 Group:		Applications/System
 Source0:	ftp://ftp.gnustep.org/pub/gnustep/core/%{name}-%{version}.tar.gz
-# Source0-md5:	5b349dd804785f335392ef4749e72a6d
+# Source0-md5:	4f6d66701ad909e57f2dba5db7f2bb54
 URL:		http://www.gnustep.org/
 BuildRequires:	autoconf
 BuildRequires:	tetex >= 1.0.7
