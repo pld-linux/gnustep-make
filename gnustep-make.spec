@@ -7,6 +7,7 @@ License:	GPL
 Vendor:		The GNUstep Project
 Group:		Applications/System
 Source0:	ftp://ftp.gnustep.org/pub/gnustep/core/%{name}-%{version}.tar.gz
+# Source0-md5:	e17e758ee9ab5bbe24dcc01fdafdb13c
 Patch0:		%{name}-acfix.patch
 URL:		http://www.gnustep.org/
 BuildRequires:	autoconf
