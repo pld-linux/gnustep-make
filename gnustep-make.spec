@@ -2,7 +2,7 @@ Summary:	GNUstep Makefile package
 Summary(pl):	Pakiet GNUstep Makefile
 Name:		gnustep-make
 Version:	1.10.0
-Release:	1
+Release:	2
 License:	GPL
 Vendor:		The GNUstep Project
 Group:		Applications/System
@@ -87,7 +87,7 @@ EOF
 
 cat > $RPM_BUILD_ROOT/etc/profile.d/GNUstep.csh << EOF
 #!/bin/csh
-source %{_prefix}/GNUstep/System/Library/Makefiles/GNUstep.csh
+source %{_prefix}/System/Library/Makefiles/GNUstep.csh
 EOF
 
 # not (yet?) supported by rpm-compress-doc
