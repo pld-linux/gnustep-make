@@ -1,3 +1,7 @@
+#
+# Conditional build:
+%bcond_without	docs
+
 Summary:	GNUstep Makefile package
 Summary(pl):	Pakiet GNUstep Makefile
 Name:		gnustep-make
@@ -11,6 +15,7 @@ Source0:	ftp://ftp.gnustep.org/pub/gnustep/core/%{name}-%{version}.tar.gz
 URL:		http://www.gnustep.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
+%{?with_docs:BuildRequires: gnustep-make-devel}
 BuildRequires:	tetex
 BuildRequires:	tetex-dvips
 BuildRequires:	tetex-format-latex
@@ -68,15 +73,20 @@ cp -f /usr/share/automake/config.* .
 	--with-tar=tar
 
 %{__make}
+
+%if %{with docs}
 %{__make} -C Documentation
+%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	special_prefix=$RPM_BUILD_ROOT
 
+%if %{with docs}
 %{__make} -C Documentation install \
 	GNUSTEP_INSTALLATION_DIR=$RPM_BUILD_ROOT%{_prefix}/System
+%endif
 
 install -d $RPM_BUILD_ROOT/etc/profile.d
 # Create profile files
@@ -130,8 +140,10 @@ fi
 %{_prefix}/System/Library/ColorPickers
 %{_prefix}/System/Library/Colors
 %{_prefix}/System/Library/DocTemplates
+%if %{with docs}
 %docdir %{_prefix}/System/Library/Documentation
 %dir %{_prefix}/System/Library/Documentation
+%endif 
 %{_prefix}/System/Library/Fonts
 %{_prefix}/System/Library/Frameworks
 %{_prefix}/System/Library/Headers
@@ -145,6 +157,7 @@ fi
 
 %{_prefix}/System/.GNUsteprc
 
+%if %{with docs}
 %dir %{_prefix}/System/Library/Documentation/Developer
 %dir %{_prefix}/System/Library/Documentation/Developer/Make
 %{_prefix}/System/Library/Documentation/Developer/Make/ReleaseNotes
@@ -157,6 +170,7 @@ fi
 %{_prefix}/System/Library/Documentation/man/man1/openapp.1*
 %dir %{_prefix}/System/Library/Documentation/man/man7
 %{_prefix}/System/Library/Documentation/man/man7/GNUstep.7*
+%endif 
 
 %attr(755,root,root) %{_prefix}/System/Library/Makefiles/config.*
 %{_prefix}/System/Library/Makefiles/tar-exclude-list
@@ -169,8 +183,10 @@ fi
 
 %files devel
 %defattr(644,root,root,755)
+%if %{with docs}
 %docdir %{_prefix}/System/Library/Documentation
 %{_prefix}/System/Library/Documentation/Developer/Make/Manual
+%endif 
 
 %{_prefix}/System/Library/Makefiles/*.make
 %{_prefix}/System/Library/Makefiles/*.template
