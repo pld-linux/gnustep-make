@@ -1,0 +1,12 @@
+--- gnustep-make-1.5.1/Documentation/makedoc.make	Wed Apr 10 17:18:13 2002
++++ gnustep-make-1.5.1.new/Documentation/makedoc.make	Sat Dec 21 20:14:05 2002
+@@ -134,8 +134,8 @@
+ internal-doc-all:: before-$(TARGET)-all \
+                    $(INTERNAL_doc_NAME).info \
+                    $(INTERNAL_doc_NAME).ps \
+-                   $(INTERNAL_doc_NAME)_toc.html \
+                    after-$(TARGET)-all
++#                   $(INTERNAL_doc_NAME)_toc.html \
+ 
+ internal-textdoc-all:: before-$(TARGET)-all \
+                    $(INTERNAL_textdoc_NAME) \
