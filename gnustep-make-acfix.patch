@@ -1,0 +1,11 @@
+--- gnustep-make-1.6.0/configure.ac.orig	2003-03-15 05:09:08.000000000 +0100
++++ gnustep-make-1.6.0/configure.ac	2003-05-14 20:48:51.000000000 +0200
+@@ -413,7 +413,7 @@
+ 	objc_threaded="-lthread $extra_LIBS",
+ 	objc_threaded="", objc_threaded="")
+   if test x"$objc_threaded" = x""; then
+-    LIBS="-lobjc $saved_LIBS -lpthread $extra_LIBS""
++    LIBS="-lobjc $saved_LIBS -lpthread $extra_LIBS"
+     AC_TRY_RUN([#include "config_thread.m"], 
+     	objc_threaded="-lpthread $extra_LIBS", 
+ 	objc_threaded="", objc_threaded="")
