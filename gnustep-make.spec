@@ -2,9 +2,9 @@ Summary:	GNUstep Makefile package
 Summary(pl):	Pakiet GNUstep Makefile
 Name:		gnustep-make
 Version:	1.5.1
-Release:	0.1
+Release:	1
 License:	GPL
-Vendor:		The Seawood Project
+Vendor:		The GNUstep Project
 Group:		Applications/System
 Source0:	ftp://ftp.gnustep.org/pub/gnustep/core/%{name}-%{version}.tar.gz
 Patch0:		gnustep-make-configure.patch
