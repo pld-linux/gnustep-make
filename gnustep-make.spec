@@ -51,7 +51,7 @@ Pakiet makefile jest prost±, wydajn± i rozszerzaln± metod± pisania
 makefile'i do projektów opartych o GNUstep. Pozwala u¿ytkownikowi na
 tworzenie projektów z pominiêciem skomplikowanych szczegó³ów
 konfiguracji i instalacji podstawowych bibliotek GNUstep. Pozwala
-tak¿e ³atwo tworzyæ kroskompilowane binaria.
+tak¿e ³atwo tworzyæ kompilowane skro¶nie binaria.
 
 %prep
 %setup -q
