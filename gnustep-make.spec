@@ -36,7 +36,7 @@ cross-compiled binaries. Library combo is %{libcombo}. %{_buildblurb}
 
 %build
 CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=%{_prefix}/GNUstep --with-library-combo=%{libcombo}
-make
+%{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
