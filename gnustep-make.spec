@@ -84,8 +84,8 @@ source %{_prefix}/GNUstep/System/Library/Makefiles/GNUstep.csh
 EOF
 
 # not (yet?) supported by rpm-compress-doc
-#find $RPM_BUILD_ROOT%{_prefix}/System/Library/Documentation \
-#	-type f ! -name '*.html' ! -name '*.css' | xargs gzip -9nf
+find $RPM_BUILD_ROOT%{_prefix}/System/Library/Documentation \
+	-type f ! -name '*.html' ! -name '*.css' ! -name '*.gz' | xargs gzip -9nf
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -145,6 +145,8 @@ fi
 %dir %{_prefix}/System/Library/Documentation/info
 %{_prefix}/System/Library/Documentation/info/*.info*
 %dir %{_prefix}/System/Library/Documentation/man
+%dir %{_prefix}/System/Library/Documentation/man/man7
+%dir %{_prefix}/System/Library/Documentation/man/man7/GNUstep.7*
 
 %attr(755,root,root) %{_prefix}/System/Library/Makefiles/config.*
 %attr(755,root,root) %{_prefix}/System/Library/Makefiles/*.sh
