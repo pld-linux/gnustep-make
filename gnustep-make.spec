@@ -29,7 +29,7 @@ Summary(pl):	Pliki potrzebne do tworzenia aplikacji przy u¿yciu gnustep-make
 Group:		Development/Tools
 Requires:	%{name} = %{version}
 
-%description devel 
+%description devel
 The makefile package is a simplistic, powerful and extensible way to
 write makefiles for a GNUstep-based project. It allows the user to
 write a GNUstep-based project without having to deal with the complex
@@ -56,13 +56,13 @@ CFLAGS="%{rpmcflags}" ./configure --prefix=%{_prefix}/GNUstep \
 %{__make}
 
 #cd  Documentation
-make -C Documentation
+%{__make} -C Documentation
 #cd ..
 
 %install
 rm -rf $RPM_BUILD_ROOT
 # {__make} install special_prefix=${RPM_BUILD_ROOT}
-make install special_prefix=${RPM_BUILD_ROOT}
+%{__make} install special_prefix=${RPM_BUILD_ROOT}
 
 install Documentation/*.texi \
 	${RPM_BUILD_ROOT}%{_prefix}/GNUstep/System/Documentation/info/
@@ -92,7 +92,7 @@ chmod 755 mygnustep.*
 mv -f mygnustep.sh $RPM_BUILD_ROOT/etc/profile.d/GNUstep.sh
 mv -f mygnustep.csh $RPM_BUILD_ROOT/etc/profile.d/GNUstep.csh
 %endif
-      
+
 cat > filelist.rpm.in << EOF
 %defattr (-, bin, bin)
 %doc COPYING ChangeLog FAQ NEWS README
