@@ -24,7 +24,7 @@ BuildRequires:	texinfo-texi2dvi
 Conflicts:	gnustep-core
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define         _prefix         /usr/%{_lib}/GNUstep
+%define		_prefix		/usr/%{_lib}/GNUstep
 %define		gsos		linux-gnu
 %ifarch %{ix86}
 %define		gscpu		ix86
@@ -94,10 +94,10 @@ cat > $RPM_BUILD_ROOT/etc/profile.d/GNUstep.sh << EOF
 #!/bin/sh
 . %{_prefix}/System/Library/Makefiles/GNUstep.sh
 
-if [ ! -d $GNUSTEP_USER_ROOT ]; then 
-    mkdir $GNUSTEP_USER_ROOT
-    chmod +rwx $GNUSTEP_USER_ROOT
-    . /usr/lib/GNUstep/System/Library/Makefiles/GNUstep.sh
+if [ ! -d $GNUSTEP_USER_ROOT ]; then
+	mkdir $GNUSTEP_USER_ROOT
+	chmod +rwx $GNUSTEP_USER_ROOT
+	. /usr/lib/GNUstep/System/Library/Makefiles/GNUstep.sh
 fi
 EOF
 
@@ -106,10 +106,10 @@ cat > $RPM_BUILD_ROOT/etc/profile.d/GNUstep.csh << EOF
 source %{_prefix}/System/Library/Makefiles/GNUstep.csh
 
 test -d $GNUSTEP_USER_ROOT
-if ($status != 0) then 
-    mkdir $GNUSTEP_USER_ROOT
-    chmod +rwx $GNUSTEP_USER_ROOT
-    source /usr/lib/GNUstep/System/Library/Makefiles/GNUstep.csh
+if ($status != 0) then
+	mkdir $GNUSTEP_USER_ROOT
+	chmod +rwx $GNUSTEP_USER_ROOT
+	source /usr/lib/GNUstep/System/Library/Makefiles/GNUstep.csh
 endif
 EOF
 
@@ -156,7 +156,7 @@ fi
 %if %{with docs}
 %docdir %{_prefix}/System/Library/Documentation
 %dir %{_prefix}/System/Library/Documentation
-%endif 
+%endif
 %{_prefix}/System/Library/Fonts
 %{_prefix}/System/Library/Frameworks
 %{_prefix}/System/Library/Headers
@@ -183,7 +183,7 @@ fi
 %{_prefix}/System/Library/Documentation/man/man1/openapp.1*
 %dir %{_prefix}/System/Library/Documentation/man/man7
 %{_prefix}/System/Library/Documentation/man/man7/GNUstep.7*
-%endif 
+%endif
 
 %attr(755,root,root) %{_prefix}/System/Library/Makefiles/config.*
 %{_prefix}/System/Library/Makefiles/tar-exclude-list
@@ -199,7 +199,7 @@ fi
 %if %{with docs}
 %docdir %{_prefix}/System/Library/Documentation
 %{_prefix}/System/Library/Documentation/Developer/Make/Manual
-%endif 
+%endif
 
 %{_prefix}/System/Library/Makefiles/*.make
 %{_prefix}/System/Library/Makefiles/*.template
