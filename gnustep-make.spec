@@ -1,55 +1,46 @@
-# This package is not relocatable
-%define ver	0.6.0
-%define date	19990918
-%define prefix 	/usr
-%define gsr 	%{prefix}/GNUstep
-%define libcombo gnu-gnu-gnu-xgps
-Name: 		gnustep-make
-Version: 	%{ver}
-Release: 	1
-Source: 	ftp://ftp.gnustep.org/pub/gnustep/core/gstep-make-%{ver}.tar.gz
-Patch:          gstep-make-nodupsh.patch
-Copyright: 	GPL
-Group: 		System Environment/Base
-Summary: 	GNUstep Makefile package
-Packager:	Christopher Seawood <cls@seawood.org>
-Distribution:	Seawood's Random RPMS (%{_buildsym})
+Summary:	GNUstep Makefile package
+Name:		gnustep-make
+Version:	0.6.0
+Release:	1
+License:	GPL
 Vendor:		The Seawood Project
+Group:		Utilities/System
+Source0:	ftp://ftp.gnustep.org/pub/gnustep/core/%{name}-%{version}.tar.gz
+Patch0:		gstep-make-nodupsh.patch
 URL:		http://www.gnustep.org/
-BuildRoot: 	/var/tmp/build-%{name}
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Conflicts:	gnustep-core
 
 %description
-This package contains the basic tools needed to run GNUstep applications.
-Library combo is %{libcombo}.
-%{_buildblurb}
+This package contains the basic tools needed to run GNUstep
+applications. Library combo is %{libcombo}. %{_buildblurb}
 
 %package devel
-Summary: Files needed to develop applications with gnustep-make
-Group: Development/Tools
-Requires: %{name} = %{ver}
+Summary:	Files needed to develop applications with gnustep-make
+Group:		Development/Tools
+Group(fr):	Development/Outils
+Group(pl):	Programowanie/Narzêdzia
+Requires:	%{name} = %{version}
 
 %description devel 
 The makefile package is a simplistic, powerful and extensible way to
-write makefiles for a GNUstep-based project.  It allows the user to
+write makefiles for a GNUstep-based project. It allows the user to
 write a GNUstep-based project without having to deal with the complex
 issues associated with the configuration and installation of the core
-GNUstep libraries.  It also allows the user to easily create
-cross-compiled binaries.
-Library combo is %{libcombo}.
-%{_buildblurb}
+GNUstep libraries. It also allows the user to easily create
+cross-compiled binaries. Library combo is %{libcombo}. %{_buildblurb}
 
 %prep
-%setup -q -n gstep-%{ver}/make
-%patch -p2 -b .nodupsh
+%setup -q -n gstep-%{version}/make
+%patch -p2
 
 %build
-CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=%{gsr} --with-library-combo=%{libcombo}
+CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=%{_prefix}/GNUstep --with-library-combo=%{libcombo}
 make
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make install GNUSTEP_INSTALLATION_DIR=${RPM_BUILD_ROOT}%{gsr}
+make install GNUSTEP_INSTALLATION_DIR=${RPM_BUILD_ROOT}%{_prefix}/GNUstep
 
 tmp1=`./config.guess`
 tmp2=`./cpu.sh $tmp1`
@@ -60,16 +51,16 @@ tmp6=`./clean_vendor.sh $tmp3`
 tmp7=`./clean_os.sh $tmp4`
 
 %ifos Linux
-mkdir -p ${RPM_BUILD_ROOT}/etc/profile.d
+install -d ${RPM_BUILD_ROOT}/etc/profile.d
 # Create profile files
 cat > mygnustep.sh << EOF
 #!/bin/sh
-. %{gsr}/Makefiles/GNUstep.sh
+. %{_prefix}/GNUstep/Makefiles/GNUstep.sh
 EOF
 
 cat > mygnustep.csh << EOF
 #!/bin/csh
-source %{gsr}/Makefiles/GNUstep.csh
+source %{_prefix}/GNUstep/Makefiles/GNUstep.csh
 EOF
 
 chmod 755 mygnustep.*
@@ -85,40 +76,40 @@ cat > filelist.rpm.in << EOF
 %config /etc/profile.d/GNUstep.sh
 %endif
 
-%dir %{gsr}
-%dir %{gsr}/share
-%dir %{gsr}/Apps
-%dir %{gsr}/Makefiles
-%dir %{gsr}/Makefiles/GSARCH
-%dir %{gsr}/Makefiles/GSARCH/GSOS
-%dir %{gsr}/Library
-%dir %{gsr}/Library/info
-%dir %{gsr}/Library/PostScript
-%dir %{gsr}/Library/Services
-%dir %{gsr}/Library/man
-%dir %{gsr}/Tools
+%dir %{_prefix}/GNUstep
+%dir %{_prefix}/GNUstep/share
+%dir %{_prefix}/GNUstep/Apps
+%dir %{_prefix}/GNUstep/Makefiles
+%dir %{_prefix}/GNUstep/Makefiles/GSARCH
+%dir %{_prefix}/GNUstep/Makefiles/GSARCH/GSOS
+%dir %{_prefix}/GNUstep/Library
+%dir %{_prefix}/GNUstep/Library/info
+%dir %{_prefix}/GNUstep/Library/PostScript
+%dir %{_prefix}/GNUstep/Library/Services
+%dir %{_prefix}/GNUstep/Library/man
+%dir %{_prefix}/GNUstep/Tools
 
-%{gsr}/Makefiles/config*
-%{gsr}/Makefiles/*.csh
-%{gsr}/Makefiles/*.sh
-%{gsr}/Makefiles/GSARCH/GSOS/which_lib
+%{_prefix}/GNUstep/Makefiles/config*
+%{_prefix}/GNUstep/Makefiles/*.csh
+%{_prefix}/GNUstep/Makefiles/*.sh
+%{_prefix}/GNUstep/Makefiles/GSARCH/GSOS/which_lib
 
-%{gsr}/Tools/debugapp
-%{gsr}/Tools/openapp
-%{gsr}/Tools/opentool
+%{_prefix}/GNUstep/Tools/debugapp
+%{_prefix}/GNUstep/Tools/openapp
+%{_prefix}/GNUstep/Tools/opentool
 
 EOF
 
 cat > filelist-devel.rpm.in << EOF
 %defattr (-, bin, bin)
-%config %{gsr}/share/config.site
-%config %{gsr}/Makefiles/GSARCH/GSOS/config.make
+%config %{_prefix}/GNUstep/share/config.site
+%config %{_prefix}/GNUstep/Makefiles/GSARCH/GSOS/config.make
 
-%{gsr}/Makefiles/*.func
-%{gsr}/Makefiles/*.make
-%{gsr}/Makefiles/*.template
-%{gsr}/Makefiles/install-sh
-%{gsr}/Makefiles/mkinstalldirs
+%{_prefix}/GNUstep/Makefiles/*.func
+%{_prefix}/GNUstep/Makefiles/*.make
+%{_prefix}/GNUstep/Makefiles/*.template
+%{_prefix}/GNUstep/Makefiles/install-sh
+%{_prefix}/GNUstep/Makefiles/mkinstalldirs
 
 EOF
 
@@ -129,17 +120,7 @@ sed -e "s|GSARCH|${tmp5}|" -e "s|GSOS|${tmp7}|" < filelist-devel.rpm.in > fileli
 rm -rf $RPM_BUILD_ROOT
 
 %files -f filelist.rpm
+%defattr(644,root,root,755)
+
 %files -f filelist-devel.rpm devel
-
-%changelog
-* Sat Sep 18 1999 Christopher Seawood <cls@seawood.org>
-- Version 0.6.0
-- Added nodupsh patch
-
-* Sat Aug 07 1999 Christopher Seawood <cls@seawood.org>
-- Updated to cvs dawn_6 branch
-
-* Fri Jun 25 1999 Christopher Seawood <cls@seawood.org>
-- Split into separate rpm from gnustep-core
-- Build from cvs snapshot
-- Added services patch
+%defattr(644,root,root,755)
