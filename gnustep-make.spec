@@ -40,7 +40,7 @@ make
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make install GNUSTEP_INSTALLATION_DIR=${RPM_BUILD_ROOT}%{_prefix}/GNUstep
+%{__make} install GNUSTEP_INSTALLATION_DIR=${RPM_BUILD_ROOT}%{_prefix}/GNUstep
 
 tmp1=`./config.guess`
 tmp2=`./cpu.sh $tmp1`
