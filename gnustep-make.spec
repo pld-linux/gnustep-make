@@ -2,7 +2,7 @@ Summary:	GNUstep Makefile package
 Summary(pl):	Pakiet GNUstep Makefile
 Name:		gnustep-make
 Version:	1.9.1
-Release:	2
+Release:	3
 License:	GPL
 Vendor:		The GNUstep Project
 Group:		Applications/System
@@ -19,7 +19,7 @@ BuildRequires:	texinfo-texi2dvi
 Conflicts:	gnustep-core
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define         _prefix         /usr/lib/GNUstep
+%define         _prefix         /usr/%{_lib}/GNUstep
 %define		gsos		linux-gnu
 %ifarch %{ix86}
 %define		gscpu		ix86
@@ -44,7 +44,7 @@ aplikacji GNUstep.
 Summary:	Files needed to develop applications with gnustep-make
 Summary(pl):	Pliki potrzebne do tworzenia aplikacji przy u¿yciu gnustep-make
 Group:		Development/Tools
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{version}-%{release}
 
 %description devel
 The makefile package is a simplistic, powerful and extensible way to
