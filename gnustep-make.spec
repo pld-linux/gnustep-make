@@ -1,3 +1,7 @@
+#
+# Conditional build:
+# _without_doc	- don't generate documentation (bootstrap build w/o gnustep-base)
+#
 Summary:	GNUstep Makefile package
 Summary(pl):	Pakiet GNUstep Makefile
 Name:		gnustep-make
@@ -10,8 +14,8 @@ Source0:	ftp://ftp.gnustep.org/pub/gnustep/core/%{name}-%{version}.tar.gz
 # Source0-md5:	5b349dd804785f335392ef4749e72a6d
 URL:		http://www.gnustep.org/
 BuildRequires:	autoconf
-BuildRequires:	tetex >= 1.0.7
-BuildRequires:	texinfo-texi2dvi
+%{!?_without_doc:BuildRequires:	tetex >= 1.0.7}
+%{!?_without_doc:BuildRequires:	texinfo-texi2dvi}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Conflicts:	gnustep-core
 
@@ -61,15 +65,21 @@ tak¿e ³atwo tworzyæ kroskompilowane binaria.
 %configure
 
 %{__make}
+
+%if %{?_without_doc:0}%{!?_without_doc:1}
 %{__make} -C Documentation
+%endif
+
 
 %install
 rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	special_prefix=$RPM_BUILD_ROOT
 
+%if %{?_without_doc:0}%{!?_without_doc:1}
 %{__make} -C Documentation install \
 	GNUSTEP_INSTALLATION_DIR=$RPM_BUILD_ROOT%{_prefix}/System
+%endif
 
 install -d $RPM_BUILD_ROOT/etc/profile.d
 # Create profile files
@@ -137,6 +147,7 @@ fi
 %{_prefix}/System/Library/Services
 %{_prefix}/System/Library/Sounds
 
+%if 0%{!?_without_doc:1}
 %dir %{_prefix}/System/Library/Documentation/Developer
 %dir %{_prefix}/System/Library/Documentation/Developer/Make
 %{_prefix}/System/Library/Documentation/Developer/Make/ReleaseNotes
@@ -145,6 +156,7 @@ fi
 %dir %{_prefix}/System/Library/Documentation/info
 %{_prefix}/System/Library/Documentation/info/*.info*
 %dir %{_prefix}/System/Library/Documentation/man
+%endif
 
 %attr(755,root,root) %{_prefix}/System/Library/Makefiles/config.*
 %attr(755,root,root) %{_prefix}/System/Library/Makefiles/*.sh
@@ -156,8 +168,10 @@ fi
 
 %files devel
 %defattr(644,root,root,755)
+%if 0%{!?_without_doc:1}
 %docdir %{_prefix}/System/Library/Documentation
 %{_prefix}/System/Library/Documentation/Developer/Make/Manual
+%endif
 
 %{_prefix}/System/Library/Makefiles/*.make
 %{_prefix}/System/Library/Makefiles/*.template
