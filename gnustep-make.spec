@@ -1,4 +1,5 @@
 Summary:	GNUstep Makefile package
+Summary(pl):	Pakiet GNUstep Makefile
 Name:		gnustep-make
 Version:	0.6.0
 Release:	1
@@ -17,8 +18,13 @@ Conflicts:	gnustep-core
 This package contains the basic tools needed to run GNUstep
 applications. Library combo is %{libcombo}. %{_buildblurb}
 
+%description -l pl
+Ten pakiet zawiera podstawowe narzêdzia potrzebne do uruchamiania
+aplikacji GNUstep.
+
 %package devel
 Summary:	Files needed to develop applications with gnustep-make
+Summary(pl):	Pliki potrzebne do tworzenia aplikacji przy u¿yciu gnustep-make
 Group:		Development/Tools
 Group(de):	Entwicklung/Werkzeuge
 Group(fr):	Development/Outils
@@ -32,6 +38,13 @@ write a GNUstep-based project without having to deal with the complex
 issues associated with the configuration and installation of the core
 GNUstep libraries. It also allows the user to easily create
 cross-compiled binaries. Library combo is %{libcombo}. %{_buildblurb}
+
+%description devel -l pl
+Pakiet makefile jest prost±, wydajn± i rozszerzaln± metod± pisania
+makefile'i do projektów opartych o GNUstep. Pozwala u¿ytkownikowi na
+tworzenie projektów z pominiêciem skomplikowanych szczegó³ów
+konfiguracji i instalacji podstawowych bibliotek GNUstep. Pozwala
+tak¿e ³atwo tworzyæ kroskompilowane binaria.
 
 %prep
 %setup -q -n gstep-%{version}/make
