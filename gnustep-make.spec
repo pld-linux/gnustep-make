@@ -1,14 +1,12 @@
 Summary:	GNUstep Makefile package
 Summary(pl):	Pakiet GNUstep Makefile
 Name:		gnustep-make
-Version:	1.5.1
-Release:	1
+Version:	1.5.2
+Release:	0.9
 License:	GPL
 Vendor:		The GNUstep Project
 Group:		Applications/System
 Source0:	ftp://ftp.gnustep.org/pub/gnustep/core/%{name}-%{version}.tar.gz
-Patch0:		gnustep-make-configure.patch
-Patch1:		gnustep-make-doc.patch
 URL:		http://www.gnustep.org/
 BuildRequires:	autoconf
 BuildRequires:	tetex >= 1.0.7
@@ -56,8 +54,6 @@ tak¿e ³atwo tworzyæ kroskompilowane binaria.
 
 %prep
 %setup -q
-%patch0 -p1
-%patch1 -p1
 
 %build
 %{__autoconf}
