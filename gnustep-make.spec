@@ -6,8 +6,6 @@ Release:	1
 License:	GPL
 Vendor:		The Seawood Project
 Group:		Applications/System
-Group(de):	Applikationen/System
-Group(pl):	Aplikacje/System
 Source0:	ftp://ftp.gnustep.org/pub/gnustep/core/%{name}-%{version}.tar.gz
 Patch0:		gstep-make-nodupsh.patch
 Patch1:		gnustep.diff.make
@@ -29,9 +27,6 @@ aplikacji GNUstep.
 Summary:	Files needed to develop applications with gnustep-make
 Summary(pl):	Pliki potrzebne do tworzenia aplikacji przy u¿yciu gnustep-make
 Group:		Development/Tools
-Group(de):	Entwicklung/Werkzeuge
-Group(fr):	Development/Outils
-Group(pl):	Programowanie/Narzêdzia
 Requires:	%{name} = %{version}
 
 %description devel 
