@@ -14,7 +14,6 @@ BuildRequires:	tetex >= 1.0.7
 BuildRequires:	texinfo-texi2dvi
 BuildRequires:	tetex-format-latex
 BuildRequires:	tetex-format-plain
-#BuildRequires:	tetex-format-platex
 BuildRequires:	tetex-dvips
 
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
