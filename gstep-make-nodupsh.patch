@@ -1,38 +1,15 @@
---- gstep-0.6.0/make/GNUstep.csh.in.cls	Tue Sep  7 23:01:47 1999
-+++ gstep-0.6.0/make/GNUstep.csh.in	Sun Sep 19 00:52:41 1999
-@@ -64,7 +64,7 @@
- #
- if ( ! ${?GNUSTEP_PATHPREFIX_LIST} ) then
-   setenv GNUSTEP_PATHPREFIX_LIST ${GNUSTEP_USER_ROOT}:${GNUSTEP_LOCAL_ROOT}:${GNUSTEP_SYSTEM_ROOT}
--endif
-+
+--- gnustep-make-1.0.1/GNUstep.csh.in.orig	Sat May  5 12:44:11 2001
++++ gnustep-make-1.0.1/GNUstep.csh.in	Fri Oct 12 15:42:56 2001
+@@ -72,9 +72,10 @@
+ 
  set tp = ""
- foreach dir ( `/bin/sh -c 'IFS=:; for i in ${GNUSTEP_PATHPREFIX_LIST}; do echo $i; done'` )
-   set tp=${tp}${dir}/Tools:
-@@ -90,5 +90,7 @@
- if ( -x ${GNUSTEP_SYSTEM_ROOT}/Tools/make_services ) then
-   ${GNUSTEP_SYSTEM_ROOT}/Tools/make_services &
- endif
-+
-+endif # ( "${GNUSTEP_PATHPREFIX_LIST}" == "" )
- 
- endif # ( "${GNUSTEP_BUILD_ROOT}" == "" )
---- gstep-0.6.0/make/GNUstep.sh.in.cls	Tue Sep  7 23:01:48 1999
-+++ gstep-0.6.0/make/GNUstep.sh.in	Sun Sep 19 00:52:59 1999
-@@ -69,7 +69,7 @@
- if [ -z "$GNUSTEP_PATHPREFIX_LIST" ]; then
-   GNUSTEP_PATHPREFIX_LIST=$GNUSTEP_USER_ROOT:$GNUSTEP_LOCAL_ROOT:$GNUSTEP_SYSTEM_ROOT
-   export GNUSTEP_PATHPREFIX_LIST
--fi
-+
- tmp_IFS="$IFS"
- IFS=:
- temp_path=
-@@ -104,5 +104,7 @@
- then
-   $GNUSTEP_SYSTEM_ROOT/Tools/make_services &
- fi
-+
-+fi # [ -z "$GNUSTEP_PATHPREFIX_LIST" ]
- 
- fi # [ -z "$GNUSTEP_BUILD_ROOT" ]
+ foreach dir ( `/bin/sh -c 'IFS=:; for i in ${GNUSTEP_PATHPREFIX}; do echo $i; done'` )
+-  set tp=${tp}${dir}/Tools:
++  echo $PATH | grep '\(:\|^\)'${dir}/Tools'\(:\|$\)' || set tp=${tp}${dir}/Tools:
+   if ( ! ${?GNUSTEP_FLATTENED} ) then
+-    set tp=${tp}${dir}/Tools/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}:
++    echo $PATH | grep '\(:\|^\)'${dir}/Tools/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}'\(:\|$\)' \
++	|| set tp=${tp}${dir}/Tools/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}:
+   endif
+ end
+ setenv GNUSTEP_PATHPREFIX_LIST $GNUSTEP_PATHPREFIX
