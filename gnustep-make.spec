@@ -145,8 +145,10 @@ fi
 %dir %{_prefix}/System/Library/Documentation/info
 %{_prefix}/System/Library/Documentation/info/*.info*
 %dir %{_prefix}/System/Library/Documentation/man
+%dir %{_prefix}/System/Library/Documentation/man/man1
+%{_prefix}/System/Library/Documentation/man/man1/openapp.1*
 %dir %{_prefix}/System/Library/Documentation/man/man7
-%dir %{_prefix}/System/Library/Documentation/man/man7/GNUstep.7*
+%{_prefix}/System/Library/Documentation/man/man7/GNUstep.7*
 
 %attr(755,root,root) %{_prefix}/System/Library/Makefiles/config.*
 %attr(755,root,root) %{_prefix}/System/Library/Makefiles/*.sh
