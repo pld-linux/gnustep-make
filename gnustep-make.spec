@@ -1,13 +1,13 @@
 Summary:	GNUstep Makefile package
 Summary(pl):	Pakiet GNUstep Makefile
 Name:		gnustep-make
-Version:	1.7.4
+Version:	1.8.0
 Release:	1
 License:	GPL
 Vendor:		The GNUstep Project
 Group:		Applications/System
 Source0:	ftp://ftp.gnustep.org/pub/gnustep/core/%{name}-%{version}.tar.gz
-# Source0-md5:	b6f3f7d8ee940351444eeae6b76e6480
+# Source0-md5:	3d8de1ed93c45b2cbfa32fe9fd0396dd
 URL:		http://www.gnustep.org/
 BuildRequires:	autoconf
 BuildRequires:	tetex >= 1.0.7
