@@ -64,7 +64,8 @@ tak¿e ³atwo tworzyæ kompilowane skro¶nie binaria.
 cp -f /usr/share/automake/config.* .
 %{__autoconf}
 %configure \
-	--disable-flattened
+	--disable-flattened \
+	--with-tar=tar
 
 %{__make}
 %{__make} -C Documentation
@@ -142,6 +143,8 @@ fi
 %{_prefix}/System/Library/Services
 %{_prefix}/System/Library/Sounds
 
+%{_prefix}/System/.GNUsteprc
+
 %dir %{_prefix}/System/Library/Documentation/Developer
 %dir %{_prefix}/System/Library/Documentation/Developer/Make
 %{_prefix}/System/Library/Documentation/Developer/Make/ReleaseNotes
@@ -156,6 +159,7 @@ fi
 %{_prefix}/System/Library/Documentation/man/man7/GNUstep.7*
 
 %attr(755,root,root) %{_prefix}/System/Library/Makefiles/config.*
+%{_prefix}/System/Library/Makefiles/tar-exclude-list
 %attr(755,root,root) %{_prefix}/System/Library/Makefiles/*.sh
 %attr(755,root,root) %{_prefix}/System/Library/Makefiles/*.csh
 %dir %{_prefix}/System/Library/Makefiles/%{gscpu}
