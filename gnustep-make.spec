@@ -8,7 +8,7 @@ Name: 		gnustep-make
 Version: 	%{ver}
 Release: 	1
 Source: 	ftp://ftp.gnustep.org/pub/gnustep/core/gstep-make-%{ver}.tar.gz
-Patch:          gstep-make-0.6.0-nodupsh.patch
+Patch:          gstep-make-nodupsh.patch
 Copyright: 	GPL
 Group: 		System Environment/Base
 Summary: 	GNUstep Makefile package
