@@ -10,12 +10,20 @@ Source0:	ftp://ftp.gnustep.org/pub/gnustep/core/%{name}-%{version}.tar.gz
 Patch0:		gnustep-make-configure.patch
 Patch1:		gnustep-make-doc.patch
 URL:		http://www.gnustep.org/
+BuildRequires:	autoconf
 BuildRequires:	tetex >= 1.0.7
 BuildRequires:	texinfo-texi2dvi
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Conflicts:	gnustep-core
 
 %define         _prefix         /usr/lib/GNUstep
+%define		gsos		linux-gnu
+%ifarch %{ix86}
+%define		gscpu		ix86
+%else
+# also s/alpha.*/alpha/, but we use only "alpha" arch for now
+%define		gscpu		%{_target_cpu}
+%endif
 
 %description
 This package contains the basic tools needed to run GNUstep
@@ -52,10 +60,6 @@ tak¿e ³atwo tworzyæ kroskompilowane binaria.
 %patch1 -p1
 
 %build
-rm -f missing
-%{__gettextize}
-%{__libtoolize}
-%{__aclocal}
 %{__autoconf}
 %configure \
 	--prefix=%{_prefix} 
@@ -66,53 +70,61 @@ rm -f missing
 rm -rf $RPM_BUILD_ROOT
 %{__make} install special_prefix=$RPM_BUILD_ROOT
 
-install -d $RPM_BUILD_ROOT%{_prefix}/System/Documentation/info
-install Documentation/*.texi \
-	$RPM_BUILD_ROOT%{_prefix}/System/Documentation/info
+%{__make} -C Documentation install \
+	GNUSTEP_INSTALLATION_DIR=$RPM_BUILD_ROOT%{_prefix}/System
 
 install -d $RPM_BUILD_ROOT/etc/profile.d
 # Create profile files
-cat > ./mygnustep.sh << EOF
+cat > $RPM_BUILD_ROOT/etc/profile.d/GNUstep.sh << EOF
 #!/bin/sh
 . %{_prefix}/System/Makefiles/GNUstep.sh
 EOF
 
-cat > mygnustep.csh << EOF
+cat > $RPM_BUILD_ROOT/etc/profile.d/GNUstep.csh << EOF
 #!/bin/csh
 source %{_prefix}/GNUstep/System/Makefiles/GNUstep.csh
 EOF
 
-chmod 755 mygnustep.*
-mv -f mygnustep.sh $RPM_BUILD_ROOT/etc/profile.d/GNUstep.sh
-mv -f mygnustep.csh $RPM_BUILD_ROOT/etc/profile.d/GNUstep.csh
+# not (yet?) supported by rpm-compress-doc
+find $RPM_BUILD_ROOT%{_prefix}/System/Documentation -type f | xargs gzip -9nf
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc ChangeLog FAQ NEWS README
-%doc Documentation/DESIGN
-#%doc Documentation/*.info
+%doc ChangeLog
+
 %dir %{_prefix}
 %{_prefix}/Local
 %{_prefix}/Network
 %dir %{_prefix}/System
 %{_prefix}/System/Applications
 %{_prefix}/System/Developer
+
 %docdir %{_prefix}/System/Documentation
-%{_prefix}/System/Documentation
+%dir %{_prefix}/System/Documentation
+%dir %{_prefix}/System/Documentation/Developer
+%{_prefix}/System/Documentation/Developer/Make
+%dir %{_prefix}/System/Documentation/User
+%{_prefix}/System/Documentation/User/GNUstep
+%dir %{_prefix}/System/Documentation/info
+%{_prefix}/System/Documentation/info/*.info*
+%dir %{_prefix}/System/Documentation/man
+
 %{_prefix}/System/Headers
 %{_prefix}/System/Libraries
 %{_prefix}/System/Library
+
 %dir %{_prefix}/System/Makefiles
 %attr(755,root,root) %{_prefix}/System/Makefiles/config.*
 %attr(755,root,root) %{_prefix}/System/Makefiles/*.sh
 %attr(755,root,root) %{_prefix}/System/Makefiles/*.csh
-%dir %{_prefix}/System/Makefiles/ix86
-%dir %{_prefix}/System/Makefiles/ix86/linux-gnu
-%attr(755,root,root) %{_prefix}/System/Makefiles/ix86/linux-gnu/user_home
-%attr(755,root,root) %{_prefix}/System/Makefiles/ix86/linux-gnu/which_lib
+%dir %{_prefix}/System/Makefiles/%{gscpu}
+%dir %{_prefix}/System/Makefiles/%{gscpu}/%{gsos}
+%attr(755,root,root) %{_prefix}/System/Makefiles/%{gscpu}/%{gsos}/user_home
+%attr(755,root,root) %{_prefix}/System/Makefiles/%{gscpu}/%{gsos}/which_lib
+
 %{_prefix}/System/share
 %attr(755,root,root) %{_prefix}/System/Tools
 
@@ -125,6 +137,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_prefix}/System/Makefiles/*.template
 %{_prefix}/System/Makefiles/Instance
 %{_prefix}/System/Makefiles/Master
-%{_prefix}/System/Makefiles/ix86/linux-gnu/*.make
+%{_prefix}/System/Makefiles/%{gscpu}/%{gsos}/*.make
 %attr(755,root,root) %{_prefix}/System/Makefiles/install-sh
 %attr(755,root,root) %{_prefix}/System/Makefiles/mkinstalldirs
