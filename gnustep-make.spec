@@ -1,11 +1,7 @@
-#
-# Conditional build:
-# _without_doc	- don't generate documentation (bootstrap build w/o gnustep-base)
-#
 Summary:	GNUstep Makefile package
 Summary(pl):	Pakiet GNUstep Makefile
 Name:		gnustep-make
-Version:	1.7.1
+Version:	1.7.2
 Release:	1
 License:	GPL
 Vendor:		The GNUstep Project
@@ -14,8 +10,8 @@ Source0:	ftp://ftp.gnustep.org/pub/gnustep/core/%{name}-%{version}.tar.gz
 # Source0-md5:	5b349dd804785f335392ef4749e72a6d
 URL:		http://www.gnustep.org/
 BuildRequires:	autoconf
-%{!?_without_doc:BuildRequires:	tetex >= 1.0.7}
-%{!?_without_doc:BuildRequires:	texinfo-texi2dvi}
+BuildRequires:	tetex >= 1.0.7
+BuildRequires:	texinfo-texi2dvi
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Conflicts:	gnustep-core
 
@@ -62,24 +58,18 @@ tak¿e ³atwo tworzyæ kroskompilowane binaria.
 
 %build
 %{__autoconf}
-%configure
+%configure --disable-flattened
 
 %{__make}
-
-%if %{?_without_doc:0}%{!?_without_doc:1}
 %{__make} -C Documentation
-%endif
-
 
 %install
 rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	special_prefix=$RPM_BUILD_ROOT
 
-%if %{?_without_doc:0}%{!?_without_doc:1}
 %{__make} -C Documentation install \
 	GNUSTEP_INSTALLATION_DIR=$RPM_BUILD_ROOT%{_prefix}/System
-%endif
 
 install -d $RPM_BUILD_ROOT/etc/profile.d
 # Create profile files
@@ -94,8 +84,8 @@ source %{_prefix}/GNUstep/System/Library/Makefiles/GNUstep.csh
 EOF
 
 # not (yet?) supported by rpm-compress-doc
-find $RPM_BUILD_ROOT%{_prefix}/System/Library/Documentation \
-	-type f ! -name '*.html' ! -name '*.css' | xargs gzip -9nf
+#find $RPM_BUILD_ROOT%{_prefix}/System/Library/Documentation \
+#	-type f ! -name '*.html' ! -name '*.css' | xargs gzip -9nf
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -147,7 +137,6 @@ fi
 %{_prefix}/System/Library/Services
 %{_prefix}/System/Library/Sounds
 
-%if 0%{!?_without_doc:1}
 %dir %{_prefix}/System/Library/Documentation/Developer
 %dir %{_prefix}/System/Library/Documentation/Developer/Make
 %{_prefix}/System/Library/Documentation/Developer/Make/ReleaseNotes
@@ -156,7 +145,6 @@ fi
 %dir %{_prefix}/System/Library/Documentation/info
 %{_prefix}/System/Library/Documentation/info/*.info*
 %dir %{_prefix}/System/Library/Documentation/man
-%endif
 
 %attr(755,root,root) %{_prefix}/System/Library/Makefiles/config.*
 %attr(755,root,root) %{_prefix}/System/Library/Makefiles/*.sh
@@ -168,10 +156,8 @@ fi
 
 %files devel
 %defattr(644,root,root,755)
-%if 0%{!?_without_doc:1}
 %docdir %{_prefix}/System/Library/Documentation
 %{_prefix}/System/Library/Documentation/Developer/Make/Manual
-%endif
 
 %{_prefix}/System/Library/Makefiles/*.make
 %{_prefix}/System/Library/Makefiles/*.template
