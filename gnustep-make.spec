@@ -1,14 +1,13 @@
 Summary:	GNUstep Makefile package
 Summary(pl):	Pakiet GNUstep Makefile
 Name:		gnustep-make
-Version:	1.6.0
+Version:	1.7.1
 Release:	1
 License:	GPL
 Vendor:		The GNUstep Project
 Group:		Applications/System
 Source0:	ftp://ftp.gnustep.org/pub/gnustep/core/%{name}-%{version}.tar.gz
-# Source0-md5:	e17e758ee9ab5bbe24dcc01fdafdb13c
-Patch0:		%{name}-acfix.patch
+# Source0-md5:	5b349dd804785f335392ef4749e72a6d
 URL:		http://www.gnustep.org/
 BuildRequires:	autoconf
 BuildRequires:	tetex >= 1.0.7
@@ -56,7 +55,6 @@ tak¿e ³atwo tworzyæ kroskompilowane binaria.
 
 %prep
 %setup -q
-%patch -p1
 
 %build
 %{__autoconf}
@@ -67,7 +65,8 @@ tak¿e ³atwo tworzyæ kroskompilowane binaria.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-%{__make} install special_prefix=$RPM_BUILD_ROOT
+%{__make} install \
+	special_prefix=$RPM_BUILD_ROOT
 
 %{__make} -C Documentation install \
 	GNUSTEP_INSTALLATION_DIR=$RPM_BUILD_ROOT%{_prefix}/System
@@ -76,66 +75,94 @@ install -d $RPM_BUILD_ROOT/etc/profile.d
 # Create profile files
 cat > $RPM_BUILD_ROOT/etc/profile.d/GNUstep.sh << EOF
 #!/bin/sh
-. %{_prefix}/System/Makefiles/GNUstep.sh
+. %{_prefix}/System/Library/Makefiles/GNUstep.sh
 EOF
 
 cat > $RPM_BUILD_ROOT/etc/profile.d/GNUstep.csh << EOF
 #!/bin/csh
-source %{_prefix}/GNUstep/System/Makefiles/GNUstep.csh
+source %{_prefix}/GNUstep/System/Library/Makefiles/GNUstep.csh
 EOF
 
 # not (yet?) supported by rpm-compress-doc
-find $RPM_BUILD_ROOT%{_prefix}/System/Documentation -type f | xargs gzip -9nf
+find $RPM_BUILD_ROOT%{_prefix}/System/Library/Documentation \
+	-type f ! -name '*.html' ! -name '*.css' | xargs gzip -9nf
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%pre
+if [ -d %{_prefix}/System/Makefiles -a ! -L %{_prefix}/System/Makefiles ]; then
+	[ -d %{_prefix}/System/Library ] || install -d %{_prefix}/System/Library
+	mv -f %{_prefix}/System/Makefiles %{_prefix}/System/Library
+	ln -sf Library/Makefiles %{_prefix}/System/Makefiles
+	echo 'Reinstall gnustep-make and gnustep-make-devel if some files are missing.' >&2
+fi
+
 %files
 %defattr(644,root,root,755)
 %doc ChangeLog
+%attr(755,root,root) %config(noreplace) %verify(not size mtime md5) /etc/profile.d/GNUstep.sh
+%attr(755,root,root) %config(noreplace) %verify(not size mtime md5) /etc/profile.d/GNUstep.csh
 
+# GNUstep top-level
 %dir %{_prefix}
 %{_prefix}/Local
 %{_prefix}/Network
 %dir %{_prefix}/System
+
+# System domain
 %{_prefix}/System/Applications
-%{_prefix}/System/Developer
-
-%docdir %{_prefix}/System/Documentation
-%dir %{_prefix}/System/Documentation
-%dir %{_prefix}/System/Documentation/Developer
-%{_prefix}/System/Documentation/Developer/Make
-%dir %{_prefix}/System/Documentation/User
-%{_prefix}/System/Documentation/User/GNUstep
-%dir %{_prefix}/System/Documentation/info
-%{_prefix}/System/Documentation/info/*.info*
-%dir %{_prefix}/System/Documentation/man
-
-%{_prefix}/System/Headers
-%{_prefix}/System/Libraries
-%{_prefix}/System/Library
-
-%dir %{_prefix}/System/Makefiles
-%attr(755,root,root) %{_prefix}/System/Makefiles/config.*
-%attr(755,root,root) %{_prefix}/System/Makefiles/*.sh
-%attr(755,root,root) %{_prefix}/System/Makefiles/*.csh
-%dir %{_prefix}/System/Makefiles/%{gscpu}
-%dir %{_prefix}/System/Makefiles/%{gscpu}/%{gsos}
-%attr(755,root,root) %{_prefix}/System/Makefiles/%{gscpu}/%{gsos}/user_home
-%attr(755,root,root) %{_prefix}/System/Makefiles/%{gscpu}/%{gsos}/which_lib
-
+%dir %{_prefix}/System/Library
+# compatibility symlink
+%{_prefix}/System/Makefiles
 %{_prefix}/System/share
 %attr(755,root,root) %{_prefix}/System/Tools
 
-%attr(755,root,root) %config(noreplace) %verify(not size mtime md5) /etc/profile.d/GNUstep.sh
-%attr(755,root,root) %config(noreplace) %verify(not size mtime md5) /etc/profile.d/GNUstep.csh
+# System/Library folder
+%{_prefix}/System/Library/ApplicationSupport
+%{_prefix}/System/Library/Bundles
+%{_prefix}/System/Library/ColorPickers
+%{_prefix}/System/Library/Colors
+%{_prefix}/System/Library/DocTemplates
+%docdir %{_prefix}/System/Library/Documentation
+%dir %{_prefix}/System/Library/Documentation
+%{_prefix}/System/Library/Fonts
+%{_prefix}/System/Library/Frameworks
+%{_prefix}/System/Library/Headers
+%{_prefix}/System/Library/Images
+%{_prefix}/System/Library/KeyBindings
+%{_prefix}/System/Library/Libraries
+%dir %{_prefix}/System/Library/Makefiles
+%{_prefix}/System/Library/PostScript
+%{_prefix}/System/Library/Services
+%{_prefix}/System/Library/Sounds
+
+%dir %{_prefix}/System/Library/Documentation/Developer
+%dir %{_prefix}/System/Library/Documentation/Developer/Make
+%{_prefix}/System/Library/Documentation/Developer/Make/ReleaseNotes
+%dir %{_prefix}/System/Library/Documentation/User
+%{_prefix}/System/Library/Documentation/User/GNUstep
+%dir %{_prefix}/System/Library/Documentation/info
+%{_prefix}/System/Library/Documentation/info/*.info*
+%dir %{_prefix}/System/Library/Documentation/man
+
+%attr(755,root,root) %{_prefix}/System/Library/Makefiles/config.*
+%attr(755,root,root) %{_prefix}/System/Library/Makefiles/*.sh
+%attr(755,root,root) %{_prefix}/System/Library/Makefiles/*.csh
+%dir %{_prefix}/System/Library/Makefiles/%{gscpu}
+%dir %{_prefix}/System/Library/Makefiles/%{gscpu}/%{gsos}
+%attr(755,root,root) %{_prefix}/System/Library/Makefiles/%{gscpu}/%{gsos}/user_home
+%attr(755,root,root) %{_prefix}/System/Library/Makefiles/%{gscpu}/%{gsos}/which_lib
 
 %files devel
 %defattr(644,root,root,755)
-%{_prefix}/System/Makefiles/*.make
-%{_prefix}/System/Makefiles/*.template
-%{_prefix}/System/Makefiles/Instance
-%{_prefix}/System/Makefiles/Master
-%{_prefix}/System/Makefiles/%{gscpu}/%{gsos}/*.make
-%attr(755,root,root) %{_prefix}/System/Makefiles/install-sh
-%attr(755,root,root) %{_prefix}/System/Makefiles/mkinstalldirs
+%docdir %{_prefix}/System/Library/Documentation
+%{_prefix}/System/Library/Documentation/Developer/Make/Manual
+
+%{_prefix}/System/Library/Makefiles/*.make
+%{_prefix}/System/Library/Makefiles/*.template
+%{_prefix}/System/Library/Makefiles/Instance
+%{_prefix}/System/Library/Makefiles/Master
+%{_prefix}/System/Library/Makefiles/%{gscpu}/%{gsos}/*.make
+%attr(755,root,root) %{_prefix}/System/Library/Makefiles/install-sh
+%attr(755,root,root) %{_prefix}/System/Library/Makefiles/mkinstalldirs
