@@ -6,7 +6,7 @@ Summary:	GNUstep Makefile package
 Summary(pl):	Pakiet GNUstep Makefile
 Name:		gnustep-make
 Version:	1.10.0
-Release:	3
+Release:	4
 License:	GPL
 Vendor:		The GNUstep Project
 Group:		Applications/System
@@ -21,6 +21,7 @@ BuildRequires:	tetex-dvips
 BuildRequires:	tetex-format-latex
 BuildRequires:	tetex-format-plain
 BuildRequires:	texinfo-texi2dvi
+Requires:	gnustep-dirs
 Conflicts:	gnustep-core
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
