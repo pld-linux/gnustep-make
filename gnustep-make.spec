@@ -4,7 +4,9 @@ Version:	0.6.0
 Release:	1
 License:	GPL
 Vendor:		The Seawood Project
-Group:		Utilities/System
+Group:		Applications/System
+Group(de):	Applikationen/System
+Group(pl):	Aplikacje/System
 Source0:	ftp://ftp.gnustep.org/pub/gnustep/core/%{name}-%{version}.tar.gz
 Patch0:		gstep-make-nodupsh.patch
 URL:		http://www.gnustep.org/
@@ -18,6 +20,7 @@ applications. Library combo is %{libcombo}. %{_buildblurb}
 %package devel
 Summary:	Files needed to develop applications with gnustep-make
 Group:		Development/Tools
+Group(de):	Entwicklung/Werkzeuge
 Group(fr):	Development/Outils
 Group(pl):	Programowanie/Narzêdzia
 Requires:	%{name} = %{version}
@@ -35,7 +38,7 @@ cross-compiled binaries. Library combo is %{libcombo}. %{_buildblurb}
 %patch -p2
 
 %build
-CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=%{_prefix}/GNUstep --with-library-combo=%{libcombo}
+CFLAGS="%{rpmcflags}" ./configure --prefix=%{_prefix}/GNUstep --with-library-combo=%{libcombo}
 %{__make}
 
 %install
@@ -64,8 +67,8 @@ source %{_prefix}/GNUstep/Makefiles/GNUstep.csh
 EOF
 
 chmod 755 mygnustep.*
-mv mygnustep.sh $RPM_BUILD_ROOT/etc/profile.d/GNUstep.sh
-mv mygnustep.csh $RPM_BUILD_ROOT/etc/profile.d/GNUstep.csh
+mv -f mygnustep.sh $RPM_BUILD_ROOT/etc/profile.d/GNUstep.sh
+mv -f mygnustep.csh $RPM_BUILD_ROOT/etc/profile.d/GNUstep.csh
 %endif
 
 cat > filelist.rpm.in << EOF
