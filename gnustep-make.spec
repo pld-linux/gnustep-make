@@ -110,7 +110,7 @@ test -d \$GNUSTEP_USER_ROOT
 if (\$status != 0) then
 	mkdir \$GNUSTEP_USER_ROOT
 	chmod +rwx \$GNUSTEP_USER_ROOT
-	source /usr/lib/GNUstep/System/Library/Makefiles/GNUstep.csh
+	source %{_prefix}/GNUstep/System/Library/Makefiles/GNUstep.csh
 endif
 EOF
 
