@@ -1,13 +1,13 @@
 Summary:	GNUstep Makefile package
 Summary(pl):	Pakiet GNUstep Makefile
 Name:		gnustep-make
-Version:	1.9.2
+Version:	1.10.0
 Release:	1
 License:	GPL
 Vendor:		The GNUstep Project
 Group:		Applications/System
 Source0:	ftp://ftp.gnustep.org/pub/gnustep/core/%{name}-%{version}.tar.gz
-# Source0-md5:	80acfa3ccaaae94f467f913d7cfedd8d
+# Source0-md5:	bfd0f6530b938e7ee1d5a300219a0ab3
 URL:		http://www.gnustep.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
