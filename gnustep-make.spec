@@ -6,7 +6,7 @@ Summary:	GNUstep Makefile package
 Summary(pl):	Pakiet GNUstep Makefile
 Name:		gnustep-make
 Version:	1.10.0
-Release:	5
+Release:	6
 License:	GPL
 Vendor:		The GNUstep Project
 Group:		Applications/System
@@ -98,7 +98,7 @@ cat > $RPM_BUILD_ROOT/etc/profile.d/GNUstep.sh << EOF
 if [ ! -d \$GNUSTEP_USER_ROOT ]; then
 	mkdir \$GNUSTEP_USER_ROOT
 	chmod +rwx \$GNUSTEP_USER_ROOT
-	. %{_prefix}/GNUstep/System/Library/Makefiles/GNUstep.sh
+	. %{_prefix}/System/Library/Makefiles/GNUstep.sh
 fi
 EOF
 
@@ -110,7 +110,7 @@ test -d \$GNUSTEP_USER_ROOT
 if (\$status != 0) then
 	mkdir \$GNUSTEP_USER_ROOT
 	chmod +rwx \$GNUSTEP_USER_ROOT
-	source %{_prefix}/GNUstep/System/Library/Makefiles/GNUstep.csh
+	source %{_prefix}/System/Library/Makefiles/GNUstep.csh
 endif
 EOF
 
