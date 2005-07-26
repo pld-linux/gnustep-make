@@ -1,17 +1,17 @@
 #
 # Conditional build:
-%bcond_without	docs
-
+%bcond_without	docs	# don't build documentation (for bootstrap)
+#
 Summary:	GNUstep Makefile package
 Summary(pl):	Pakiet GNUstep Makefile
 Name:		gnustep-make
-Version:	1.10.0
-Release:	6
+Version:	1.11.0
+Release:	1
 License:	GPL
 Vendor:		The GNUstep Project
 Group:		Applications/System
 Source0:	ftp://ftp.gnustep.org/pub/gnustep/core/%{name}-%{version}.tar.gz
-# Source0-md5:	bfd0f6530b938e7ee1d5a300219a0ab3
+# Source0-md5:	91f7e64e0531d56571ae93f6fdf14f58
 URL:		http://www.gnustep.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -143,8 +143,6 @@ fi
 # System domain
 %{_prefix}/System/Applications
 %dir %{_prefix}/System/Library
-# compatibility symlink
-%{_prefix}/System/Makefiles
 %{_prefix}/System/share
 %attr(755,root,root) %{_prefix}/System/Tools
 
@@ -168,8 +166,6 @@ fi
 %{_prefix}/System/Library/PostScript
 %{_prefix}/System/Library/Services
 %{_prefix}/System/Library/Sounds
-
-%{_prefix}/System/.GNUsteprc
 
 %if %{with docs}
 %dir %{_prefix}/System/Library/Documentation/Developer
