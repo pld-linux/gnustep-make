@@ -84,6 +84,9 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	special_prefix=$RPM_BUILD_ROOT
 
+#libFoundation + friends won't build without that
+ln -s Library/Makefiles $RPM_BUILD_ROOT%{_prefix}/System/Makefiles
+
 %if %{with docs}
 %{__make} -C Documentation install \
 	GNUSTEP_INSTALLATION_DIR=$RPM_BUILD_ROOT%{_prefix}/System
@@ -139,6 +142,7 @@ fi
 %dir %{_prefix}
 %{_prefix}/Local
 %dir %{_prefix}/System
+%{_prefix}/System/Makefiles
 
 # System domain
 %{_prefix}/System/Applications
