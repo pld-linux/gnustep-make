@@ -5,18 +5,19 @@
 Summary:	GNUstep Makefile package
 Summary(pl):	Pakiet GNUstep Makefile
 Name:		gnustep-make
-Version:	1.11.0
+Version:	1.11.1
 Release:	1
 License:	GPL
 Vendor:		The GNUstep Project
 Group:		Applications/System
 Source0:	ftp://ftp.gnustep.org/pub/gnustep/core/%{name}-%{version}.tar.gz
-# Source0-md5:	91f7e64e0531d56571ae93f6fdf14f58
+# Source0-md5:	c2e79f5ac72a70454f5301c5d5510d23
 URL:		http://www.gnustep.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
 %{?with_docs:BuildRequires: gnustep-make-devel}
-BuildRequires:	tetex
+# texi2html >= 1.61 (with -init_file) is included in tetex >= 3
+BuildRequires:	tetex >= 1:3.0
 BuildRequires:	tetex-dvips
 BuildRequires:	tetex-format-latex
 BuildRequires:	tetex-format-plain
@@ -136,8 +137,8 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc ChangeLog
-%attr(755,root,root) %config(noreplace) %verify(not size mtime md5) /etc/profile.d/GNUstep.sh
-%attr(755,root,root) %config(noreplace) %verify(not size mtime md5) /etc/profile.d/GNUstep.csh
+%attr(755,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/profile.d/GNUstep.sh
+%attr(755,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/profile.d/GNUstep.csh
 
 # GNUstep top-level
 %dir %{_prefix}
