@@ -15,13 +15,15 @@ Source0:	ftp://ftp.gnustep.org/pub/gnustep/core/%{name}-%{version}.tar.gz
 URL:		http://www.gnustep.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
-%{?with_docs:BuildRequires: gnustep-make-devel}
+%if %{with docs}
+BuildRequires: gnustep-make-devel
 # texi2html >= 1.61 (with -init_file) is included in tetex >= 3
 BuildRequires:	tetex >= 1:3.0
 BuildRequires:	tetex-dvips
 BuildRequires:	tetex-format-latex
 BuildRequires:	tetex-format-plain
 BuildRequires:	texinfo-texi2dvi
+%endif
 Requires:	gnustep-dirs
 Conflicts:	gnustep-core
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
