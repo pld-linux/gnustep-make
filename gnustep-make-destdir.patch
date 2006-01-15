@@ -1,0 +1,11 @@
+--- gnustep-make-1.11.2/GNUmakefile.in.orig	2005-11-28 22:07:45.000000000 +0100
++++ gnustep-make-1.11.2/GNUmakefile.in	2006-01-15 20:06:50.574779750 +0100
+@@ -62,7 +62,7 @@
+ export GNUSTEP_TARGET_LDIR
+ export MAYBE_LIBRARY_COMBO
+ 
+-makedir = @GNUSTEP_MAKEFILES@
++makedir = $(special_prefix)@GNUSTEP_MAKEFILES@
+ tooldir = $(GNUSTEP_SYSTEM_ROOT)/Tools
+ 
+ INSTALL		= @INSTALL@
