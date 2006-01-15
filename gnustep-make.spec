@@ -5,15 +5,16 @@
 Summary:	GNUstep Makefile package
 Summary(pl):	Pakiet GNUstep Makefile
 Name:		gnustep-make
-Version:	1.11.1
+Version:	1.11.2
 Release:	1
 License:	GPL
 Vendor:		The GNUstep Project
 Group:		Applications/System
 Source0:	ftp://ftp.gnustep.org/pub/gnustep/core/%{name}-%{version}.tar.gz
-# Source0-md5:	c2e79f5ac72a70454f5301c5d5510d23
+# Source0-md5:	87f563d71368ebb670c485ecdf198365
+Patch0:		%{name}-destdir.patch
 URL:		http://www.gnustep.org/
-BuildRequires:	autoconf
+BuildRequires:	autoconf >= 2.57
 BuildRequires:	automake
 %if %{with docs}
 BuildRequires: gnustep-make-devel
@@ -68,14 +69,15 @@ tak¿e ³atwo tworzyæ kompilowane skro¶nie binaria.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 cp -f /usr/share/automake/config.* .
 %{__autoconf}
 %configure \
 	--disable-flattened \
-	--with-tar=tar \
-	--with-library-combo=gnu-gnu-gnu
+	--with-library-combo=gnu-gnu-gnu \
+	--with-tar=tar
 
 %{__make}
 
@@ -85,11 +87,9 @@ cp -f /usr/share/automake/config.* .
 
 %install
 rm -rf $RPM_BUILD_ROOT
+
 %{__make} install \
 	special_prefix=$RPM_BUILD_ROOT
-
-#libFoundation + friends won't build without that
-ln -s Library/Makefiles $RPM_BUILD_ROOT%{_prefix}/System/Makefiles
 
 %if %{with docs}
 %{__make} -C Documentation install \
@@ -142,11 +142,13 @@ fi
 %attr(755,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/profile.d/GNUstep.sh
 %attr(755,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/profile.d/GNUstep.csh
 
+%dir %{_sysconfdir}/GNUstep
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/GNUstep/GNUstep.conf
+
 # GNUstep top-level
 %dir %{_prefix}
 %{_prefix}/Local
 %dir %{_prefix}/System
-%{_prefix}/System/Makefiles
 
 # System domain
 %{_prefix}/System/Applications
@@ -196,7 +198,6 @@ fi
 %attr(755,root,root) %{_prefix}/System/Library/Makefiles/*.csh
 %dir %{_prefix}/System/Library/Makefiles/%{gscpu}
 %dir %{_prefix}/System/Library/Makefiles/%{gscpu}/%{gsos}
-%attr(755,root,root) %{_prefix}/System/Library/Makefiles/%{gscpu}/%{gsos}/user_home
 %attr(755,root,root) %{_prefix}/System/Library/Makefiles/%{gscpu}/%{gsos}/which_lib
 
 %files devel
