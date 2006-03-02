@@ -1,0 +1,22 @@
+--- gnustep-make-1.11.2/GNUstep.csh.in~	2005-11-28 21:53:37.000000000 +0100
++++ gnustep-make-1.11.2/GNUstep.csh.in	2006-03-02 16:31:18.000000000 +0100
+@@ -191,7 +191,7 @@
+ endif
+ unset temp_path dir
+ 
+-source "${GNUSTEP_MAKEFILES}/ld_lib_path.csh"
++#source "${GNUSTEP_MAKEFILES}/ld_lib_path.csh"
+ 
+ # FIXME/TODO - use GNUSTEP_PATHLIST here
+ set gnustep_class_path="${GNUSTEP_USER_ROOT}/Library/Libraries/Java:${GNUSTEP_LOCAL_ROOT}/Library/Libraries/Java:${GNUSTEP_NETWORK_ROOT}/Library/Libraries/Java:${GNUSTEP_SYSTEM_ROOT}/Library/Libraries/Java"
+--- gnustep-make-1.11.2/GNUstep.sh.in~	2005-11-28 21:53:37.000000000 +0100
++++ gnustep-make-1.11.2/GNUstep.sh.in	2006-03-02 16:31:12.000000000 +0100
+@@ -294,7 +294,7 @@
+ unset temp_path
+ export PATH
+ 
+-. $GNUSTEP_MAKEFILES/ld_lib_path.sh
++#. $GNUSTEP_MAKEFILES/ld_lib_path.sh
+ 
+ tmp_IFS="$IFS"
+ IFS=:
