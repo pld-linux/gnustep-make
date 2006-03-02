@@ -78,7 +78,8 @@ cp -f /usr/share/automake/config.* .
 %configure \
 	--disable-flattened \
 	--with-library-combo=gnu-gnu-gnu \
-	--with-tar=tar
+	--with-tar=tar \
+	--disable-importing-config-file
 
 %{__make}
 
