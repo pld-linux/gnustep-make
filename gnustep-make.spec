@@ -93,7 +93,7 @@ rm -rf $RPM_BUILD_ROOT
 	special_prefix=$RPM_BUILD_ROOT
 
 %if %{with docs}
-%{__make} -C Documentation install \
+GNUSTEP_MAKEFILES= %{__make} -C Documentation install \
 	GNUSTEP_INSTALLATION_DIR=$RPM_BUILD_ROOT%{_prefix}/System
 %endif
 
