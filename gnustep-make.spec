@@ -6,13 +6,14 @@ Summary:	GNUstep Makefile package
 Summary(pl):	Pakiet GNUstep Makefile
 Name:		gnustep-make
 Version:	1.11.2
-Release:	1
+Release:	2
 License:	GPL
 Vendor:		The GNUstep Project
 Group:		Applications/System
 Source0:	ftp://ftp.gnustep.org/pub/gnustep/core/%{name}-%{version}.tar.gz
 # Source0-md5:	87f563d71368ebb670c485ecdf198365
 Patch0:		%{name}-destdir.patch
+Patch1:		%{name}-no-LD_LIBRARY_PATH.patch
 URL:		http://www.gnustep.org/
 BuildRequires:	autoconf >= 2.57
 BuildRequires:	automake
@@ -70,6 +71,7 @@ tak¿e ³atwo tworzyæ kompilowane skro¶nie binaria.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 %build
 cp -f /usr/share/automake/config.* .
@@ -105,7 +107,6 @@ cat > $RPM_BUILD_ROOT/etc/profile.d/GNUstep.sh << EOF
 if [ ! -d \$GNUSTEP_USER_ROOT ]; then
 	mkdir \$GNUSTEP_USER_ROOT
 	chmod +rwx \$GNUSTEP_USER_ROOT
-	. %{_prefix}/System/Library/Makefiles/GNUstep.sh
 fi
 EOF
 
@@ -117,7 +118,6 @@ test -d \$GNUSTEP_USER_ROOT
 if (\$status != 0) then
 	mkdir \$GNUSTEP_USER_ROOT
 	chmod +rwx \$GNUSTEP_USER_ROOT
-	source %{_prefix}/System/Library/Makefiles/GNUstep.csh
 endif
 EOF
 
