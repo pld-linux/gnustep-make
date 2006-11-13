@@ -30,13 +30,6 @@ Conflicts:	gnustep-core
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_prefix		/usr/%{_lib}/GNUstep
-%define		gsos		linux-gnu
-%ifarch %{ix86}
-%define		gscpu		ix86
-%else
-# also s/alpha.*/alpha/, but we use only "alpha" arch for now
-%define		gscpu		%(echo %{_target_cpu} | sed -e 's/amd64/x86_64/;s/ppc/powerpc/')
-%endif
 
 %description
 This package contains the basic tools needed to run GNUstep
@@ -76,7 +69,6 @@ tak¿e ³atwo tworzyæ kompilowane skro¶nie binaria.
 cp -f /usr/share/automake/config.* .
 %{__autoconf}
 %configure \
-	--disable-flattened \
 	--with-library-combo=gnu-gnu-gnu \
 	--with-tar=tar
 
@@ -195,9 +187,7 @@ fi
 %{_prefix}/System/Library/Makefiles/tar-exclude-list
 %attr(755,root,root) %{_prefix}/System/Library/Makefiles/*.sh
 %attr(755,root,root) %{_prefix}/System/Library/Makefiles/*.csh
-%dir %{_prefix}/System/Library/Makefiles/%{gscpu}
-%dir %{_prefix}/System/Library/Makefiles/%{gscpu}/%{gsos}
-%attr(755,root,root) %{_prefix}/System/Library/Makefiles/%{gscpu}/%{gsos}/which_lib
+%attr(755,root,root) %{_prefix}/System/Library/Makefiles/which_lib
 
 %files devel
 %defattr(644,root,root,755)
@@ -210,6 +200,5 @@ fi
 %{_prefix}/System/Library/Makefiles/*.template
 %{_prefix}/System/Library/Makefiles/Instance
 %{_prefix}/System/Library/Makefiles/Master
-%{_prefix}/System/Library/Makefiles/%{gscpu}/%{gsos}/*.make
 %attr(755,root,root) %{_prefix}/System/Library/Makefiles/install-sh
 %attr(755,root,root) %{_prefix}/System/Library/Makefiles/mkinstalldirs
