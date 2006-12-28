@@ -5,19 +5,19 @@
 Summary:	GNUstep Makefile package
 Summary(pl):	Pakiet GNUstep Makefile
 Name:		gnustep-make
-Version:	1.11.2
-Release:	2
+Version:	1.13.0
+Release:	1
 License:	GPL
 Vendor:		The GNUstep Project
 Group:		Applications/System
 Source0:	ftp://ftp.gnustep.org/pub/gnustep/core/%{name}-%{version}.tar.gz
-# Source0-md5:	87f563d71368ebb670c485ecdf198365
-Patch0:		%{name}-destdir.patch
-Patch1:		%{name}-no-LD_LIBRARY_PATH.patch
+# Source0-md5:	1d7a434e751c58c6390055c14ada302b
+Patch0:		%{name}-no-LD_LIBRARY_PATH.patch
 URL:		http://www.gnustep.org/
 BuildRequires:	autoconf >= 2.57
 BuildRequires:	automake
 %if %{with docs}
+BuildRequires:	gnustep-make >= 1.13.0
 # texi2html >= 1.61 (with -init_file) is included in tetex >= 3
 BuildRequires:	tetex >= 1:3.0
 BuildRequires:	tetex-dvips
@@ -63,7 +63,6 @@ tak¿e ³atwo tworzyæ kompilowane skro¶nie binaria.
 %prep
 %setup -q
 %patch0 -p1
-%patch1 -p1
 
 %build
 cp -f /usr/share/automake/config.* .
@@ -75,7 +74,9 @@ cp -f /usr/share/automake/config.* .
 %{__make}
 
 %if %{with docs}
-GNUSTEP_MAKEFILES= %{__make} -C Documentation
+GNUSTEP_MAKEFILES=%{_prefix}/System/Library/Makefiles \
+GNUSTEP_FLATTENED=yes \
+%{__make} -C Documentation
 %endif
 
 %install
@@ -85,7 +86,9 @@ rm -rf $RPM_BUILD_ROOT
 	special_prefix=$RPM_BUILD_ROOT
 
 %if %{with docs}
-GNUSTEP_MAKEFILES= %{__make} -C Documentation install \
+GNUSTEP_MAKEFILES=%{_prefix}/System/Library/Makefiles \
+GNUSTEP_FLATTENED=yes \
+%{__make} -C Documentation install \
 	GNUSTEP_INSTALLATION_DIR=$RPM_BUILD_ROOT%{_prefix}/System
 %endif
 
