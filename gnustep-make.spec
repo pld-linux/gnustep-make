@@ -3,7 +3,7 @@
 %bcond_without	docs	# don't build documentation (for bootstrap)
 #
 Summary:	GNUstep Makefile package
-Summary(pl):	Pakiet GNUstep Makefile
+Summary(pl.UTF-8):   Pakiet GNUstep Makefile
 Name:		gnustep-make
 Version:	1.13.0
 Release:	1
@@ -35,13 +35,13 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 This package contains the basic tools needed to run GNUstep
 applications.
 
-%description -l pl
-Ten pakiet zawiera podstawowe narzêdzia potrzebne do uruchamiania
+%description -l pl.UTF-8
+Ten pakiet zawiera podstawowe narzÄ™dzia potrzebne do uruchamiania
 aplikacji GNUstep.
 
 %package devel
 Summary:	Files needed to develop applications with gnustep-make
-Summary(pl):	Pliki potrzebne do tworzenia aplikacji przy u¿yciu gnustep-make
+Summary(pl.UTF-8):   Pliki potrzebne do tworzenia aplikacji przy uÅ¼yciu gnustep-make
 Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
 
@@ -53,12 +53,12 @@ issues associated with the configuration and installation of the core
 GNUstep libraries. It also allows the user to easily create
 cross-compiled binaries.
 
-%description devel -l pl
-Pakiet makefile jest prost±, wydajn± i rozszerzaln± metod± pisania
-makefile'i do projektów opartych o GNUstep. Pozwala u¿ytkownikowi na
-tworzenie projektów z pominiêciem skomplikowanych szczegó³ów
+%description devel -l pl.UTF-8
+Pakiet makefile jest prostÄ…, wydajnÄ… i rozszerzalnÄ… metodÄ… pisania
+makefile'i do projektÃ³w opartych o GNUstep. Pozwala uÅ¼ytkownikowi na
+tworzenie projektÃ³w z pominiÄ™ciem skomplikowanych szczegÃ³Å‚Ã³w
 konfiguracji i instalacji podstawowych bibliotek GNUstep. Pozwala
-tak¿e ³atwo tworzyæ kompilowane skro¶nie binaria.
+takÅ¼e Å‚atwo tworzyÄ‡ kompilowane skroÅ›nie binaria.
 
 %prep
 %setup -q
