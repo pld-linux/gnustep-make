@@ -3,7 +3,7 @@
 %bcond_without	docs	# don't build documentation (for bootstrap)
 #
 Summary:	GNUstep Makefile package
-Summary(pl.UTF-8):   Pakiet GNUstep Makefile
+Summary(pl.UTF-8):	Pakiet GNUstep Makefile
 Name:		gnustep-make
 Version:	1.13.0
 Release:	1
@@ -41,7 +41,7 @@ aplikacji GNUstep.
 
 %package devel
 Summary:	Files needed to develop applications with gnustep-make
-Summary(pl.UTF-8):   Pliki potrzebne do tworzenia aplikacji przy użyciu gnustep-make
+Summary(pl.UTF-8):	Pliki potrzebne do tworzenia aplikacji przy użyciu gnustep-make
 Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
 
