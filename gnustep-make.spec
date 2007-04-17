@@ -1,6 +1,6 @@
 #
 # Conditional build:
-%bcond_without	docs	# don't build documentation (for bootstrap)
+%bcond_without	doc	# don't build documentation (for bootstrap)
 #
 Summary:	GNUstep Makefile package
 Summary(pl.UTF-8):	Pakiet GNUstep Makefile
@@ -16,7 +16,7 @@ Patch0:		%{name}-no-LD_LIBRARY_PATH.patch
 URL:		http://www.gnustep.org/
 BuildRequires:	autoconf >= 2.57
 BuildRequires:	automake
-%if %{with docs}
+%if %{with doc}
 BuildRequires:	gnustep-make >= 1.13.0
 # texi2html >= 1.61 (with -init_file) is included in tetex >= 3
 BuildRequires:	tetex >= 1:3.0
@@ -73,7 +73,7 @@ cp -f /usr/share/automake/config.* .
 
 %{__make}
 
-%if %{with docs}
+%if %{with doc}
 GNUSTEP_MAKEFILES=%{_prefix}/System/Library/Makefiles \
 GNUSTEP_FLATTENED=yes \
 %{__make} -C Documentation
@@ -85,7 +85,7 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	special_prefix=$RPM_BUILD_ROOT
 
-%if %{with docs}
+%if %{with doc}
 GNUSTEP_MAKEFILES=%{_prefix}/System/Library/Makefiles \
 GNUSTEP_FLATTENED=yes \
 %{__make} -C Documentation install \
@@ -156,7 +156,7 @@ fi
 %{_prefix}/System/Library/ColorPickers
 %{_prefix}/System/Library/Colors
 %{_prefix}/System/Library/DocTemplates
-%if %{with docs}
+%if %{with doc}
 %docdir %{_prefix}/System/Library/Documentation
 %dir %{_prefix}/System/Library/Documentation
 %endif
@@ -171,7 +171,7 @@ fi
 %{_prefix}/System/Library/Services
 %{_prefix}/System/Library/Sounds
 
-%if %{with docs}
+%if %{with doc}
 %dir %{_prefix}/System/Library/Documentation/Developer
 %dir %{_prefix}/System/Library/Documentation/Developer/Make
 %{_prefix}/System/Library/Documentation/Developer/Make/ReleaseNotes
@@ -194,7 +194,7 @@ fi
 
 %files devel
 %defattr(644,root,root,755)
-%if %{with docs}
+%if %{with doc}
 %docdir %{_prefix}/System/Library/Documentation
 %{_prefix}/System/Library/Documentation/Developer/Make/Manual
 %endif
