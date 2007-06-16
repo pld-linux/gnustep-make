@@ -1,35 +1,26 @@
 #
-# Conditional build:
-%bcond_without	doc	# don't build documentation (for bootstrap)
-#
 Summary:	GNUstep Makefile package
 Summary(pl.UTF-8):	Pakiet GNUstep Makefile
 Name:		gnustep-make
-Version:	1.13.0
+Version:	2.0.1
 Release:	1
 License:	GPL
-Vendor:		The GNUstep Project
 Group:		Applications/System
 Source0:	ftp://ftp.gnustep.org/pub/gnustep/core/%{name}-%{version}.tar.gz
-# Source0-md5:	1d7a434e751c58c6390055c14ada302b
+# Source0-md5:	f268733ea23f53e211e3977e27b46098
 Patch0:		%{name}-no-LD_LIBRARY_PATH.patch
 URL:		http://www.gnustep.org/
 BuildRequires:	autoconf >= 2.57
 BuildRequires:	automake
-%if %{with doc}
-BuildRequires:	gnustep-make >= 1.13.0
 # texi2html >= 1.61 (with -init_file) is included in tetex >= 3
 BuildRequires:	tetex >= 1:3.0
 BuildRequires:	tetex-dvips
 BuildRequires:	tetex-format-latex
 BuildRequires:	tetex-format-plain
 BuildRequires:	texinfo-texi2dvi
-%endif
 Requires:	gnustep-dirs
 Conflicts:	gnustep-core
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-
-%define		_prefix		/usr/%{_lib}/GNUstep
 
 %description
 This package contains the basic tools needed to run GNUstep
@@ -69,15 +60,12 @@ cp -f /usr/share/automake/config.* .
 %{__autoconf}
 %configure \
 	--with-library-combo=gnu-gnu-gnu \
+	--with-layout=fhs \
 	--with-tar=tar
 
 %{__make}
 
-%if %{with doc}
-GNUSTEP_MAKEFILES=%{_prefix}/System/Library/Makefiles \
-GNUSTEP_FLATTENED=yes \
-%{__make} -C Documentation
-%endif
+#GNUSTEP_MAKEFILES=`pwd` %{__make} -C Documentation
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -85,18 +73,11 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	special_prefix=$RPM_BUILD_ROOT
 
-%if %{with doc}
-GNUSTEP_MAKEFILES=%{_prefix}/System/Library/Makefiles \
-GNUSTEP_FLATTENED=yes \
-%{__make} -C Documentation install \
-	GNUSTEP_INSTALLATION_DIR=$RPM_BUILD_ROOT%{_prefix}/System
-%endif
-
 install -d $RPM_BUILD_ROOT/etc/profile.d
 # Create profile files
 cat > $RPM_BUILD_ROOT/etc/profile.d/GNUstep.sh << EOF
 #!/bin/sh
-. %{_prefix}/System/Library/Makefiles/GNUstep.sh
+. %{_datadir}/GNUstep/Makefiles/GNUstep.sh
 
 if [ ! -d \$GNUSTEP_USER_ROOT ]; then
 	mkdir \$GNUSTEP_USER_ROOT
@@ -106,7 +87,7 @@ EOF
 
 cat > $RPM_BUILD_ROOT/etc/profile.d/GNUstep.csh << EOF
 #!/bin/csh
-source %{_prefix}/System/Library/Makefiles/GNUstep.csh
+source %{_datadir}Makefiles/GNUstep.csh
 
 test -d \$GNUSTEP_USER_ROOT
 if (\$status != 0) then
@@ -135,41 +116,16 @@ fi
 %doc ChangeLog
 %attr(755,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/profile.d/GNUstep.sh
 %attr(755,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/profile.d/GNUstep.csh
+%attr(755,root,root) %{_bindir}/*
 
 %dir %{_sysconfdir}/GNUstep
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/GNUstep/GNUstep.conf
 
 # GNUstep top-level
-%dir %{_prefix}
-%{_prefix}/Local
-%dir %{_prefix}/System
-
-# System domain
-%{_prefix}/System/Applications
-%dir %{_prefix}/System/Library
-%{_prefix}/System/share
-%attr(755,root,root) %{_prefix}/System/Tools
+%dir %{_datadir}/GNUstep
 
 # System/Library folder
-%{_prefix}/System/Library/ApplicationSupport
-%{_prefix}/System/Library/Bundles
-%{_prefix}/System/Library/ColorPickers
-%{_prefix}/System/Library/Colors
-%{_prefix}/System/Library/DocTemplates
-%if %{with doc}
-%docdir %{_prefix}/System/Library/Documentation
-%dir %{_prefix}/System/Library/Documentation
-%endif
-%{_prefix}/System/Library/Fonts
-%{_prefix}/System/Library/Frameworks
-%{_prefix}/System/Library/Headers
-%{_prefix}/System/Library/Images
-%{_prefix}/System/Library/KeyBindings
-%{_prefix}/System/Library/Libraries
-%dir %{_prefix}/System/Library/Makefiles
-%{_prefix}/System/Library/PostScript
-%{_prefix}/System/Library/Services
-%{_prefix}/System/Library/Sounds
+%dir %{_datadir}/GNUstep/Makefiles
 
 %if %{with doc}
 %dir %{_prefix}/System/Library/Documentation/Developer
@@ -186,11 +142,10 @@ fi
 %{_prefix}/System/Library/Documentation/man/man7/GNUstep.7*
 %endif
 
-%attr(755,root,root) %{_prefix}/System/Library/Makefiles/config.*
-%{_prefix}/System/Library/Makefiles/tar-exclude-list
-%attr(755,root,root) %{_prefix}/System/Library/Makefiles/*.sh
-%attr(755,root,root) %{_prefix}/System/Library/Makefiles/*.csh
-%attr(755,root,root) %{_prefix}/System/Library/Makefiles/which_lib
+%attr(755,root,root) %{_datadir}/GNUstep/Makefiles/config.*
+%{_datadir}/GNUstep/Makefiles/tar-exclude-list
+%attr(755,root,root) %{_datadir}/GNUstep/Makefiles/*.sh
+%attr(755,root,root) %{_datadir}/GNUstep/Makefiles/*.csh
 
 %files devel
 %defattr(644,root,root,755)
@@ -199,9 +154,11 @@ fi
 %{_prefix}/System/Library/Documentation/Developer/Make/Manual
 %endif
 
-%{_prefix}/System/Library/Makefiles/*.make
-%{_prefix}/System/Library/Makefiles/*.template
-%{_prefix}/System/Library/Makefiles/Instance
-%{_prefix}/System/Library/Makefiles/Master
-%attr(755,root,root) %{_prefix}/System/Library/Makefiles/install-sh
-%attr(755,root,root) %{_prefix}/System/Library/Makefiles/mkinstalldirs
+%{_datadir}/GNUstep/Makefiles/*.make
+%{_datadir}/GNUstep/Makefiles/*.template
+%{_datadir}/GNUstep/Makefiles/Instance
+%{_datadir}/GNUstep/Makefiles/Master
+%{_datadir}/GNUstep/Makefiles/gnustep-make-help
+
+%attr(755,root,root) %{_datadir}/GNUstep/Makefiles/install-sh
+%attr(755,root,root) %{_datadir}/GNUstep/Makefiles/mkinstalldirs
