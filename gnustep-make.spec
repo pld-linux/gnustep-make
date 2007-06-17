@@ -8,6 +8,7 @@ License:	GPL
 Group:		Applications/System
 Source0:	ftp://ftp.gnustep.org/pub/gnustep/core/%{name}-%{version}.tar.gz
 # Source0-md5:	f268733ea23f53e211e3977e27b46098
+Source1:	%{name}-fslayout-pld
 Patch0:		%{name}-no-LD_LIBRARY_PATH.patch
 URL:		http://www.gnustep.org/
 BuildRequires:	autoconf >= 2.57
@@ -54,13 +55,14 @@ także łatwo tworzyć kompilowane skrośnie binaria.
 %prep
 %setup -q
 %patch0 -p1
+cp %{SOURCE1} FilesystemLayouts/pld
 
 %build
 cp -f /usr/share/automake/config.* .
 %{__autoconf}
 %configure \
 	--with-library-combo=gnu-gnu-gnu \
-	--with-layout=fhs \
+	--with-layout=pld \
 	--with-tar=tar
 
 %{__make}
