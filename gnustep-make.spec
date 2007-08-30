@@ -3,7 +3,7 @@ Summary:	GNUstep Makefile package
 Summary(pl.UTF-8):	Pakiet GNUstep Makefile
 Name:		gnustep-make
 Version:	2.0.1
-Release:	1
+Release:	2
 License:	GPL
 Group:		Applications/System
 Source0:	ftp://ftp.gnustep.org/pub/gnustep/core/%{name}-%{version}.tar.gz
@@ -97,6 +97,9 @@ if (\$status != 0) then
 	chmod +rwx \$GNUSTEP_USER_ROOT
 endif
 EOF
+
+# Remove excessive escaping
+sed -i -e 's|"/usr"|/usr|g' $RPM_BUILD_ROOT/etc/GNUstep/GNUstep.conf
 
 # not (yet?) supported by rpm-compress-doc
 find $RPM_BUILD_ROOT%{_prefix}/System/Library/Documentation \
