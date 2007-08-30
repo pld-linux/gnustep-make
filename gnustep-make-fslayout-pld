@@ -51,6 +51,7 @@ GNUSTEP_SYSTEM_LIBRARIES=/lib
 GNUSTEP_SYSTEM_DOC=/share/GNUstep/Documentation
 GNUSTEP_SYSTEM_DOC_MAN=/share/man
 GNUSTEP_SYSTEM_DOC_INFO=/share/info
+GNUSTEP_SYSTEM_CONFIG_FILE=/etc/GNUstep/GNUstep.conf
 
 GNUSTEP_NETWORK_APPS=/local/lib/GNUstep/Applications
 GNUSTEP_NETWORK_ADMIN_APPS=/local/lib/GNUstep/Applications
