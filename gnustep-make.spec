@@ -2,12 +2,12 @@
 Summary:	GNUstep Makefile package
 Summary(pl.UTF-8):	Pakiet GNUstep Makefile
 Name:		gnustep-make
-Version:	2.0.1
-Release:	3
+Version:	2.0.2
+Release:	1
 License:	GPL
 Group:		Applications/System
 Source0:	ftp://ftp.gnustep.org/pub/gnustep/core/%{name}-%{version}.tar.gz
-# Source0-md5:	f268733ea23f53e211e3977e27b46098
+# Source0-md5:	dabbb123a8eb865abc2a7ae8af4ebc5a
 Source1:	%{name}-fslayout-pld
 Patch0:		%{name}-no-LD_LIBRARY_PATH.patch
 URL:		http://www.gnustep.org/
