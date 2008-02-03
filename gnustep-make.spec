@@ -10,6 +10,7 @@ Source0:	ftp://ftp.gnustep.org/pub/gnustep/core/%{name}-%{version}.tar.gz
 # Source0-md5:	dabbb123a8eb865abc2a7ae8af4ebc5a
 Source1:	%{name}-fslayout-pld
 Patch0:		%{name}-no-LD_LIBRARY_PATH.patch
+Patch1:		%{name}-no-chain-library-links.patch
 URL:		http://www.gnustep.org/
 BuildRequires:	autoconf >= 2.57
 BuildRequires:	automake
@@ -55,6 +56,7 @@ także łatwo tworzyć kompilowane skrośnie binaria.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 cp %{SOURCE1} FilesystemLayouts/pld
 
 %build
