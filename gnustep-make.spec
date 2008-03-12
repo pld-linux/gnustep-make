@@ -2,12 +2,12 @@
 Summary:	GNUstep Makefile package
 Summary(pl.UTF-8):	Pakiet GNUstep Makefile
 Name:		gnustep-make
-Version:	2.0.2
+Version:	2.0.5
 Release:	1
 License:	GPL
 Group:		Applications/System
 Source0:	ftp://ftp.gnustep.org/pub/gnustep/core/%{name}-%{version}.tar.gz
-# Source0-md5:	dabbb123a8eb865abc2a7ae8af4ebc5a
+# Source0-md5:	22b6145301284c9655e470aea38d8393
 Source1:	%{name}-fslayout-pld
 Patch0:		%{name}-no-LD_LIBRARY_PATH.patch
 Patch1:		%{name}-no-chain-library-links.patch
@@ -124,6 +124,13 @@ fi
 %attr(755,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/profile.d/GNUstep.sh
 %attr(755,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/profile.d/GNUstep.csh
 %attr(755,root,root) %{_bindir}/*
+%{_mandir}/man1/debugapp.1*
+%{_mandir}/man1/gnustep-config.1*
+%{_mandir}/man1/openapp.1*
+%{_mandir}/man1/opentool.1*
+%{_mandir}/man7/GNUstep.7*
+%{_mandir}/man7/library-combo.7*
+
 
 %dir %{_sysconfdir}/GNUstep
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/GNUstep/GNUstep.conf
