@@ -2,15 +2,14 @@
 Summary:	GNUstep Makefile package
 Summary(pl.UTF-8):	Pakiet GNUstep Makefile
 Name:		gnustep-make
-Version:	2.0.7
+Version:	2.2.0
 Release:	1
 License:	GPL
 Group:		Applications/System
 Source0:	ftp://ftp.gnustep.org/pub/gnustep/core/%{name}-%{version}.tar.gz
-# Source0-md5:	1a4b3cf7cca6d1e90b84034012480630
+# Source0-md5:	3d2d06d3313432fc82e6b09c49fb7f8a
 Source1:	%{name}-fslayout-pld
-Patch0:		%{name}-no-LD_LIBRARY_PATH.patch
-Patch1:		%{name}-no-chain-library-links.patch
+Patch0:		%{name}-no-chain-library-links.patch
 URL:		http://www.gnustep.org/
 BuildRequires:	autoconf >= 2.57
 BuildRequires:	automake
@@ -56,7 +55,6 @@ także łatwo tworzyć kompilowane skrośnie binaria.
 %prep
 %setup -q
 %patch0 -p1
-%patch1 -p1
 cp %{SOURCE1} FilesystemLayouts/pld
 
 %build
