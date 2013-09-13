@@ -1,24 +1,31 @@
 #
+# Conditional build:
+%bcond_with	bootstrap	# don't use existing installation for docs build
+%bcond_without	doc		# documentation build
+#
 Summary:	GNUstep Makefile package
 Summary(pl.UTF-8):	Pakiet GNUstep Makefile
 Name:		gnustep-make
-Version:	2.2.0
+Version:	2.6.5
 Release:	1
-License:	GPL
+License:	GPL v3+
 Group:		Applications/System
 Source0:	ftp://ftp.gnustep.org/pub/gnustep/core/%{name}-%{version}.tar.gz
-# Source0-md5:	3d2d06d3313432fc82e6b09c49fb7f8a
+# Source0-md5:	1e143d2c920cef02535ab533af8b1846
 Source1:	%{name}-fslayout-pld
 Patch0:		%{name}-no-chain-library-links.patch
 URL:		http://www.gnustep.org/
 BuildRequires:	autoconf >= 2.57
 BuildRequires:	automake
+%if %{with doc}
+%{!?with_bootstrap:BuildRequires:	gnustep-make >= 2}
 # texi2html >= 1.61 (with -init_file) is included in tetex >= 3
 BuildRequires:	tetex >= 1:3.0
 BuildRequires:	tetex-dvips
 BuildRequires:	tetex-format-latex
 BuildRequires:	tetex-format-plain
 BuildRequires:	texinfo-texi2dvi
+%endif
 Requires:	gnustep-dirs
 Conflicts:	gnustep-core
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -56,6 +63,9 @@ także łatwo tworzyć kompilowane skrośnie binaria.
 %setup -q
 %patch0 -p1
 cp %{SOURCE1} FilesystemLayouts/pld
+%if "%{_lib}" != "lib"
+%{__sed} -i -e 's,/lib\>,/%{_lib},g' FilesystemLayouts/pld
+%endif
 
 %build
 cp -f /usr/share/automake/config.* .
@@ -67,13 +77,32 @@ cp -f /usr/share/automake/config.* .
 
 %{__make}
 
-#GNUSTEP_MAKEFILES=`pwd` %{__make} -C Documentation
+%if %{with doc}
+%{__make} -C Documentation \
+	%{!?with_bootstrap:GNUSTEP_MAKEFILES=%{_datadir}/GNUstep/Makefiles}
+%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
 %{__make} install \
-	special_prefix=$RPM_BUILD_ROOT
+	DESTDIR=$RPM_BUILD_ROOT
+
+%if %{with doc}
+%{__make} -C Documentation install \
+	DESTDIR=$RPM_BUILD_ROOT \
+	GNUSTEP_MAKEFILES=$RPM_BUILD_ROOT%{_datadir}/GNUstep/Makefiles
+
+%{__rm} $RPM_BUILD_ROOT%{_datadir}/GNUstep/Documentation/User/GNUstep/README.{Cygwin,Darwin,MinGW*}
+
+# not (yet?) supported by rpm-compress-doc
+find $RPM_BUILD_ROOT%{_datadir}/GNUstep/Documentation \
+	-type f ! -name '*.html' ! -name '*.css' ! -name '*.pdf' ! -name '*.ps' | xargs gzip -9nf
+
+%else
+# just Documentation tree for other gnustep-* packages
+install -d $RPM_BUILD_ROOT%{_datadir}/GNUstep/Documentation/{Developer,User/GNUstep}
+%endif
 
 install -d $RPM_BUILD_ROOT/etc/profile.d
 # Create profile files
@@ -89,7 +118,7 @@ EOF
 
 cat > $RPM_BUILD_ROOT/etc/profile.d/GNUstep.csh << EOF
 #!/bin/csh
-source %{_datadir}Makefiles/GNUstep.csh
+source %{_datadir}/Makefiles/GNUstep.csh
 
 test -d \$GNUSTEP_USER_ROOT
 if (\$status != 0) then
@@ -98,30 +127,20 @@ if (\$status != 0) then
 endif
 EOF
 
-# Remove excessive escaping and fix lib/lib64 dir
-sed -i -e 's|"/usr"|/usr|g' -e 's|/lib|/%{_lib}|g' $RPM_BUILD_ROOT/etc/GNUstep/GNUstep.conf
-
-# not (yet?) supported by rpm-compress-doc
-find $RPM_BUILD_ROOT%{_prefix}/System/Library/Documentation \
-	-type f ! -name '*.html' ! -name '*.css' ! -name '*.gz' | xargs gzip -9nf
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%pre
-if [ -d %{_prefix}/System/Makefiles -a ! -L %{_prefix}/System/Makefiles ]; then
-	[ -d %{_prefix}/System/Library ] || install -d %{_prefix}/System/Library
-	mv -f %{_prefix}/System/Makefiles %{_prefix}/System/Library
-	ln -sf Library/Makefiles %{_prefix}/System/Makefiles
-	echo 'Reinstall gnustep-make and gnustep-make-devel if some files are missing.' >&2
-fi
-
 %files
 %defattr(644,root,root,755)
-%doc ChangeLog
+# here only files not packaged by make -C Documentation install
+%doc ChangeLog* FAQ GNUstep-HOWTO
 %attr(755,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/profile.d/GNUstep.sh
 %attr(755,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/profile.d/GNUstep.csh
-%attr(755,root,root) %{_bindir}/*
+%attr(755,root,root) %{_bindir}/debugapp
+%attr(755,root,root) %{_bindir}/gnustep-config
+%attr(755,root,root) %{_bindir}/gnustep-tests
+%attr(755,root,root) %{_bindir}/openapp
+%attr(755,root,root) %{_bindir}/opentool
 %{_mandir}/man1/debugapp.1*
 %{_mandir}/man1/gnustep-config.1*
 %{_mandir}/man1/openapp.1*
@@ -129,30 +148,32 @@ fi
 %{_mandir}/man7/GNUstep.7*
 %{_mandir}/man7/library-combo.7*
 
-
 %dir %{_sysconfdir}/GNUstep
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/GNUstep/GNUstep.conf
 
 # GNUstep top-level
 %dir %{_datadir}/GNUstep
 
-# System/Library folder
-%dir %{_datadir}/GNUstep/Makefiles
-
+%docdir %{_datadir}/GNUstep/Documentation
+%dir %{_datadir}/GNUstep/Documentation
+%dir %{_datadir}/GNUstep/Documentation/Developer
+%dir %{_datadir}/GNUstep/Documentation/User
+%dir %{_datadir}/GNUstep/Documentation/User/GNUstep
 %if %{with doc}
-%dir %{_prefix}/System/Library/Documentation/Developer
-%dir %{_prefix}/System/Library/Documentation/Developer/Make
-%{_prefix}/System/Library/Documentation/Developer/Make/ReleaseNotes
-%dir %{_prefix}/System/Library/Documentation/User
-%{_prefix}/System/Library/Documentation/User/GNUstep
-%dir %{_prefix}/System/Library/Documentation/info
-%{_prefix}/System/Library/Documentation/info/*.info*
-%dir %{_prefix}/System/Library/Documentation/man
-%dir %{_prefix}/System/Library/Documentation/man/man1
-%{_prefix}/System/Library/Documentation/man/man1/openapp.1*
-%dir %{_prefix}/System/Library/Documentation/man/man7
-%{_prefix}/System/Library/Documentation/man/man7/GNUstep.7*
+%dir %{_datadir}/GNUstep/Documentation/Developer/Make
+%{_datadir}/GNUstep/Documentation/Developer/Make/ReleaseNotes
+%{_datadir}/GNUstep/Documentation/User/GNUstep/gnustep-faq.pdf
+%{_datadir}/GNUstep/Documentation/User/GNUstep/gnustep-filesystem.pdf
+%{_datadir}/GNUstep/Documentation/User/GNUstep/gnustep-howto.pdf
+%{_datadir}/GNUstep/Documentation/User/GNUstep/gnustep-userfaq.pdf
+
+%{_infodir}/gnustep-faq.info*
+%{_infodir}/gnustep-howto.info*
+%{_infodir}/gnustep-make.info*
+%{_infodir}/gnustep-userfaq.info*
 %endif
+
+%dir %{_datadir}/GNUstep/Makefiles
 
 %attr(755,root,root) %{_datadir}/GNUstep/Makefiles/config.*
 %{_datadir}/GNUstep/Makefiles/tar-exclude-list
@@ -162,8 +183,8 @@ fi
 %files devel
 %defattr(644,root,root,755)
 %if %{with doc}
-%docdir %{_prefix}/System/Library/Documentation
-%{_prefix}/System/Library/Documentation/Developer/Make/Manual
+%docdir %{_datadir}/GNUstep/Documentation
+%{_datadir}/GNUstep/Documentation/Developer/Make/Manual
 %endif
 
 %{_datadir}/GNUstep/Makefiles/*.make
@@ -171,6 +192,13 @@ fi
 %{_datadir}/GNUstep/Makefiles/Instance
 %{_datadir}/GNUstep/Makefiles/Master
 %{_datadir}/GNUstep/Makefiles/gnustep-make-help
+
+%dir %{_datadir}/GNUstep/Makefiles/TestFramework
+%{_datadir}/GNUstep/Makefiles/TestFramework/GNUmakefile.in
+%{_datadir}/GNUstep/Makefiles/TestFramework/*Testing.h
+%{_datadir}/GNUstep/Makefiles/TestFramework/README
+%attr(755,root,root) %{_datadir}/GNUstep/Makefiles/TestFramework/Summary.sh
+%{_datadir}/GNUstep/Makefiles/TestFramework/example*.m
 
 %attr(755,root,root) %{_datadir}/GNUstep/Makefiles/install-sh
 %attr(755,root,root) %{_datadir}/GNUstep/Makefiles/mkinstalldirs
