@@ -175,7 +175,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %dir %{_datadir}/GNUstep/Makefiles
 
-%attr(755,root,root) %{_datadir}/GNUstep/Makefiles/config.*
+%attr(755,root,root) %{_datadir}/GNUstep/Makefiles/config.guess
+%attr(755,root,root) %{_datadir}/GNUstep/Makefiles/config.sub
 %{_datadir}/GNUstep/Makefiles/tar-exclude-list
 %attr(755,root,root) %{_datadir}/GNUstep/Makefiles/*.sh
 %attr(755,root,root) %{_datadir}/GNUstep/Makefiles/*.csh
