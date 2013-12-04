@@ -18,7 +18,7 @@ URL:		http://www.gnustep.org/
 BuildRequires:	autoconf >= 2.57
 BuildRequires:	automake
 %if %{with doc}
-%{!?with_bootstrap:BuildRequires:	gnustep-make >= 2}
+%{!?with_bootstrap:BuildRequires:	gnustep-make-devel >= 2}
 # texi2html >= 1.61 (with -init_file) is included in tetex >= 3
 BuildRequires:	tetex >= 1:3.0
 BuildRequires:	tetex-dvips
