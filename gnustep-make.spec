@@ -7,7 +7,7 @@ Summary:	GNUstep Makefile package
 Summary(pl.UTF-8):	Pakiet GNUstep Makefile
 Name:		gnustep-make
 Version:	2.6.5
-Release:	1
+Release:	2
 License:	GPL v3+
 Group:		Applications/System
 Source0:	ftp://ftp.gnustep.org/pub/gnustep/core/%{name}-%{version}.tar.gz
