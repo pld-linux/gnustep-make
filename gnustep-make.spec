@@ -6,12 +6,12 @@
 Summary:	GNUstep Makefile package
 Summary(pl.UTF-8):	Pakiet GNUstep Makefile
 Name:		gnustep-make
-Version:	2.6.5
-Release:	3
+Version:	2.6.6
+Release:	1
 License:	GPL v3+
 Group:		Applications/System
 Source0:	ftp://ftp.gnustep.org/pub/gnustep/core/%{name}-%{version}.tar.gz
-# Source0-md5:	1e143d2c920cef02535ab533af8b1846
+# Source0-md5:	e9ddf251e31c54545e70b0521b73a48e
 Source1:	%{name}-fslayout-pld
 Patch0:		%{name}-no-chain-library-links.patch
 URL:		http://www.gnustep.org/
@@ -163,10 +163,16 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with doc}
 %dir %{_datadir}/GNUstep/Documentation/Developer/Make
 %{_datadir}/GNUstep/Documentation/Developer/Make/ReleaseNotes
+
 %{_datadir}/GNUstep/Documentation/User/GNUstep/gnustep-faq.pdf
 %{_datadir}/GNUstep/Documentation/User/GNUstep/gnustep-filesystem.pdf
 %{_datadir}/GNUstep/Documentation/User/GNUstep/gnustep-howto.pdf
 %{_datadir}/GNUstep/Documentation/User/GNUstep/gnustep-userfaq.pdf
+
+%{_datadir}/GNUstep/Documentation/User/GNUstep/gnustep-faq*.html
+%{_datadir}/GNUstep/Documentation/User/GNUstep/gnustep-filesystem*.html
+%{_datadir}/GNUstep/Documentation/User/GNUstep/gnustep-howto*.html
+%{_datadir}/GNUstep/Documentation/User/GNUstep/gnustep-userfaq*.html
 
 %{_infodir}/gnustep-faq.info*
 %{_infodir}/gnustep-howto.info*
