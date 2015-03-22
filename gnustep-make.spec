@@ -2,12 +2,12 @@
 # Conditional build:
 %bcond_with	bootstrap	# don't use existing installation for docs build
 %bcond_without	doc		# documentation build
-#
+
 Summary:	GNUstep Makefile package
 Summary(pl.UTF-8):	Pakiet GNUstep Makefile
 Name:		gnustep-make
 Version:	2.6.6
-Release:	2
+Release:	3
 License:	GPL v3+
 Group:		Applications/System
 Source0:	ftp://ftp.gnustep.org/pub/gnustep/core/%{name}-%{version}.tar.gz
@@ -130,6 +130,14 @@ EOF
 
 %clean
 rm -rf $RPM_BUILD_ROOT
+
+%if %{with doc}
+%post	-p /sbin/postshell
+-/usr/sbin/fix-info-dir -c %{_infodir}
+
+%postun	-p /sbin/postshell
+-/usr/sbin/fix-info-dir -c %{_infodir}
+%endif
 
 %files
 %defattr(644,root,root,755)
