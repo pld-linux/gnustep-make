@@ -61,7 +61,7 @@ także łatwo tworzyć kompilowane skrośnie binaria.
 
 %prep
 %setup -q
-%patch0 -p1
+%patch -P0 -p1
 cp %{SOURCE1} FilesystemLayouts/pld
 %if "%{_lib}" != "lib"
 %{__sed} -i -e 's,/lib\>,/%{_lib},g' FilesystemLayouts/pld
