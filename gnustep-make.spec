@@ -7,7 +7,7 @@ Summary:	GNUstep Makefile package
 Summary(pl.UTF-8):	Pakiet GNUstep Makefile
 Name:		gnustep-make
 Version:	2.6.6
-Release:	4
+Release:	5
 License:	GPL v3+
 Group:		Applications/System
 Source0:	ftp://ftp.gnustep.org/pub/gnustep/core/%{name}-%{version}.tar.gz
@@ -29,6 +29,8 @@ BuildRequires:	texinfo-texi2dvi
 Requires:	gnustep-dirs
 Conflicts:	gnustep-core
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
+%global		_enable_debug_packages	0
 
 %description
 This package contains the basic tools needed to run GNUstep
